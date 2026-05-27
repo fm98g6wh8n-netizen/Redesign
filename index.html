@@ -9,7 +9,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
 <script>
@@ -21,13 +21,13 @@
           primary: "#ffb778",
           "primary-dim": "#c98039",
           "primary-soft": "rgba(255,183,120,0.12)",
-          background: "#0e0e0e",
+          background: "#0a0a0a",
           surface: "#131313",
           "surface-low": "#1b1b1b",
           "surface-mid": "#1f1f1f",
           "surface-high": "#2a2a2a",
           "surface-bright": "#393939",
-          "on-surface": "#e2e2e2",
+          "on-surface": "#e7e2dc",
           "on-surface-variant": "#d8c3b3",
           secondary: "#c8c6c5",
           tertiary: "#6dd4ed",
@@ -36,6 +36,7 @@
           "outline-variant": "#534438",
         },
         fontFamily: {
+          display: ['Fraunces', '"Source Serif 4"', '"Noto Serif KR"', "serif"],
           serif: ['"Source Serif 4"', '"Noto Serif KR"', "serif"],
           sans: ["Inter", '"Malgun Gothic"', "system-ui", "sans-serif"],
           mono: ["ui-monospace", "Menlo", "Consolas", "monospace"],
@@ -46,66 +47,236 @@
 </script>
 
 <style>
-  html, body { background: #0e0e0e; }
-  body { font-family: Inter, "Malgun Gothic", sans-serif; color: #e2e2e2; -webkit-text-size-adjust: 100%; }
-  .serif { font-family: "Source Serif 4", "Noto Serif KR", serif; }
+  html, body { background: #0a0a0a; }
+  body {
+    font-family: Inter, "Malgun Gothic", sans-serif; color: #e7e2dc;
+    -webkit-text-size-adjust: 100%; overflow-x: hidden;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  .serif { font-family: "Source Serif 4", "Noto Serif KR", serif; font-feature-settings: "kern" 1, "liga" 1, "dlig" 1; }
+  .italic-serif { font-family: "Source Serif 4", serif; font-style: italic; font-weight: 500; }
 
-  /* 분위기 배경 광원 */
-  .ambient-glow {
-    position: fixed;
-    top: 18%; left: 50%;
-    width: 70vw; height: 60vh;
+  /* 디스플레이용 럭셔리 세리프: Fraunces — opsz 144 (dramatic high-contrast) */
+  .display { font-family: "Fraunces", "Source Serif 4", "Noto Serif KR", serif;
+    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
+    font-feature-settings: "kern" 1, "liga" 1, "dlig" 1, "ss01" 1, "ss02" 1, "ss03" 1;
+    letter-spacing: -0.02em; font-weight: 600;
+  }
+  .display-it { font-family: "Fraunces", serif; font-style: italic;
+    font-variation-settings: "opsz" 144;
+    font-feature-settings: "kern" 1, "liga" 1, "dlig" 1; font-weight: 500;
+  }
+
+  /* ----- Ambient & atmosphere ----- */
+  .ambient-orb {
+    position: fixed; top: 12%; left: 50%;
+    width: 80vw; height: 70vh;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(255,183,120,0.07) 0%, rgba(0,0,0,0) 70%);
+    background: radial-gradient(ellipse at center, rgba(255,183,120,0.08) 0%, rgba(255,183,120,0.02) 35%, rgba(0,0,0,0) 70%);
     z-index: 0; pointer-events: none;
+    animation: ambient-drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes ambient-drift {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
+    100% { transform: translate(-48%, -52%) scale(1.08); opacity: 1; }
   }
   .noise {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     opacity: .025;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  }
+  .spotlight {
+    position: fixed; width: 720px; height: 720px;
+    background: radial-gradient(circle, rgba(255,183,120,0.08) 0%, rgba(255,183,120,0) 60%);
+    pointer-events: none; z-index: 1;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen; will-change: left, top;
+  }
 
-  /* 글래스 패널 */
+  /* ----- Glass panel ----- */
   .glass {
-    background: rgba(19,19,19,0.55);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(31,31,31,0.55) 0%, rgba(19,19,19,0.45) 100%);
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
     border: 0.5px solid rgba(255,255,255,0.10);
-    transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.05) inset, 0 20px 40px -20px rgba(0,0,0,0.5);
+    transition: border-color .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, transform .4s;
   }
   .glass-hover:hover {
     border-color: rgba(255,183,120,0.4);
-    box-shadow: 0 0 28px rgba(255,183,120,0.14);
-    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(255,183,120,0.18) inset, 0 24px 50px -16px rgba(255,183,120,0.18);
+    transform: translateY(-3px);
   }
-  .amber-glow { text-shadow: 0 0 18px rgba(255,183,120,0.45); }
+  .amber-glow { text-shadow: 0 0 22px rgba(255,183,120,0.55), 0 0 8px rgba(255,183,120,0.3); }
   .amber-edge { box-shadow: 0 0 14px rgba(255,183,120,0.25); }
-  .ring-primary-soft { box-shadow: inset 0 0 0 1px rgba(255,183,120,0.35), 0 0 24px rgba(255,183,120,0.08); }
+  .ring-primary-soft { box-shadow: inset 0 0 0 1px rgba(255,183,120,0.4), 0 0 28px rgba(255,183,120,0.12); }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* 챗 / 답변 영역 */
-  .ans-text { white-space: pre-wrap; }
-  details > summary { list-style: none; cursor: pointer; }
-  details > summary::-webkit-details-marker { display: none; }
+  /* ----- 3D Tilt cards ----- */
+  .tilt { transform-style: preserve-3d; transition: transform .15s ease-out, border-color .4s, box-shadow .4s; will-change: transform; }
+  .tilt > * { transform: translateZ(20px); }
 
-  /* 사이드 탭 활성 표식 */
-  .sidetab.active { color: #ffb778; }
-  .sidetab.active::after {
-    content: ""; position: absolute; right: 0; height: 28px; width: 3px;
-    background: #ffb778; border-radius: 2px;
-    box-shadow: 0 0 10px rgba(255,183,120,0.6);
+  /* ----- Scroll-unfold ----- */
+  .unfold {
+    opacity: 0;
+    transform: perspective(1200px) rotateX(10deg) translateY(36px) scale(.97);
+    transition: opacity .85s cubic-bezier(.2,.8,.2,1), transform .85s cubic-bezier(.2,.8,.2,1);
+    transform-origin: center top;
+  }
+  .unfold.is-visible { opacity: 1; transform: perspective(1200px) rotateX(0) translateY(0) scale(1); }
+
+  /* ----- Tab enter animation ----- */
+  .tab { display: none; }
+  .tab.active { display: block; animation: tab-in .6s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes tab-in {
+    from { opacity: 0; transform: perspective(1200px) rotateX(6deg) translateY(14px); }
+    to   { opacity: 1; transform: perspective(1200px) rotateX(0) translateY(0); }
   }
 
-  /* 탭 패널 전환 */
-  .tab { display: none; }
-  .tab.active { display: block; }
+  /* ----- Hero ----- */
+  .hero-title-wrap { perspective: 1200px; }
+  .hero-title {
+    background: linear-gradient(120deg, #ffb778 0%, #fff0d8 45%, #ffb778 65%, #c98039 100%);
+    background-size: 220% auto;
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+    animation: sheen 7s ease-in-out infinite;
+    will-change: background-position, transform;
+  }
+  @keyframes sheen { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  .hero-sub { animation: fade-up 1s .2s cubic-bezier(.2,.8,.2,1) both; }
+  .hero-chips { animation: fade-up 1s .4s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* 모달 */
+  /* Subtle floating dots in hero */
+  .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .particles span {
+    position: absolute; bottom: -10px; width: 2px; height: 2px; border-radius: 50%;
+    background: #ffb778; opacity: 0; box-shadow: 0 0 8px #ffb778;
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0); opacity: 0; }
+    10%  { opacity: .6; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+  }
+
+  /* ----- Side nav active glow ----- */
+  .sidetab { transition: color .3s, background-color .3s; }
+  .sidetab.active { color: #ffb778; }
+  .sidetab.active::after {
+    content: ""; position: absolute; right: -1px; height: 26px; width: 3px;
+    background: #ffb778; border-radius: 2px 0 0 2px;
+    box-shadow: 0 0 14px rgba(255,183,120,0.8);
+    animation: tab-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes tab-pulse {
+    0%,100% { opacity: 1; box-shadow: 0 0 12px rgba(255,183,120,0.7); }
+    50% { opacity: .7; box-shadow: 0 0 22px rgba(255,183,120,1); }
+  }
+
+  /* ----- Live indicators ----- */
+  .live-dot { position: relative; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #6dd4ed; }
+  .live-dot::after {
+    content: ""; position: absolute; inset: -3px; border-radius: 50%;
+    border: 1px solid #6dd4ed; animation: ring-pulse 2s ease-out infinite;
+  }
+  .live-dot.amber { background: #ffb778; }
+  .live-dot.amber::after { border-color: #ffb778; }
+  @keyframes ring-pulse {
+    0% { transform: scale(.7); opacity: 1; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+
+  /* ----- Tree SVG draw-in ----- */
+  .tree-svg path { stroke-dasharray: 600; stroke-dashoffset: 600; }
+  .tab-strategy.active .tree-svg path { animation: draw 1.6s .3s ease-out forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .tree-node { opacity: 0; transform: translateY(8px) scale(.96); transition: opacity .6s, transform .6s; }
+  .tab-strategy.active .tree-node { opacity: 1; transform: translateY(0) scale(1); }
+  .tab-strategy.active .tree-node.n1 { transition-delay: .15s; }
+  .tab-strategy.active .tree-node.n2 { transition-delay: 1.0s; }
+  .tab-strategy.active .tree-node.n3 { transition-delay: 1.2s; }
+  .tab-strategy.active .tree-node.n4 { transition-delay: 1.4s; }
+
+  /* ----- Risk gauge animation ----- */
+  .gauge-ring { stroke-dasharray: 264; stroke-dashoffset: 264; transition: stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1); }
+  .tab-strategy.active .gauge-ring { stroke-dashoffset: 92; }
+  .gauge-num { transition: opacity .4s; }
+
+  /* ----- Probability bars animation ----- */
+  .pb-fill { width: 0; transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
+  .tab-strategy.active .pb-fill { width: var(--pb-w); }
+
+  /* ----- Calculator bars ----- */
+  .bar-fill { width: 0; transition: width 1.1s cubic-bezier(.2,.8,.2,1); }
+
+  /* ----- Card lift (KB / generic) ----- */
+  .card-lift { transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s; }
+  .card-lift:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,183,120,0.5);
+    box-shadow: 0 14px 44px -10px rgba(255,183,120,0.22), 0 0 0 1px rgba(255,183,120,0.12);
+  }
+
+  /* ----- Halo on hover (cinematic radial) ----- */
+  .halo { position: relative; }
+  .halo::before {
+    content: ""; position: absolute; inset: -30%;
+    background: radial-gradient(circle, rgba(255,183,120,0.18) 0%, rgba(255,183,120,0) 60%);
+    z-index: -1; opacity: 0; transition: opacity .5s ease;
+    pointer-events: none;
+  }
+  .halo:hover::before { opacity: 1; }
+
+  /* ----- Ticker (in KB-like contexts) ----- */
+  @keyframes ticker {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
+  /* ----- Settings modal ----- */
   .modal-bg { display: none; }
-  .modal-bg.show { display: flex; }
+  .modal-bg.show { display: flex; animation: modal-in .35s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes modal-in { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(8px); } }
 
-  /* 보고서 시트 (인쇄용) */
+  /* ----- Buttons amber pulse on hover ----- */
+  .btn-primary {
+    background: linear-gradient(135deg, #ffb778, #c98039);
+    color: #1a1208; transition: all .35s cubic-bezier(.2,.8,.2,1);
+    box-shadow: 0 0 0 1px rgba(255,183,120,0.5) inset, 0 0 18px rgba(255,183,120,0.18);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 0 1px rgba(255,183,120,0.8) inset, 0 0 28px rgba(255,183,120,0.5);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    border: 1px solid rgba(255,183,120,0.45); color: #ffb778; transition: all .3s;
+  }
+  .btn-ghost:hover { background: rgba(255,183,120,0.08); border-color: rgba(255,183,120,0.7); }
+
+  /* ----- Reduced motion safety ----- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.05ms !important;
+    }
+    .spotlight, .particles, .ambient-orb { display: none !important; }
+  }
+
+  /* ----- Report sheet (print only) ----- */
   #reportSheet { display: none; }
   .rs-head { background: #152844; color: #fff; padding: 22px 26px; }
   .rs-title { font-size: 21px; font-weight: bold; letter-spacing: .3px; }
@@ -125,30 +296,65 @@
     body.printing-report #reportSheet { display: block !important; background: #fff; color: #1a1a1a; }
     @page { margin: 14mm; }
   }
+
+  /* Calc / chat helpers */
+  .calc-section { padding: 6px 0; }
+  .calc-section-title { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #ffb778; font-weight: 600; margin-bottom: 8px; border-bottom: 1px solid rgba(255,183,120,0.12); padding-bottom: 4px; }
+  .calc-label { display: block; font-size: 11px; letter-spacing: 0.06em; color: #c8c6c5; margin-top: 8px; margin-bottom: 4px; }
+  .calc-input { width: 100%; background: rgba(19,19,19,0.6); border: 1px solid rgba(83,68,56,0.55); border-radius: 5px; padding: 9px 11px; font-size: 13px; color: #e7e2dc; outline: none; font-family: inherit; transition: border-color .25s, box-shadow .25s; }
+  .calc-input:focus { border-color: #ffb778; box-shadow: 0 0 0 1px rgba(255,183,120,0.4), 0 0 14px rgba(255,183,120,0.15); }
+  .calc-input::placeholder { color: rgba(216,195,179,0.35); }
+  .qchip { font-size: 11px; padding: 4px 9px; border: 1px dashed rgba(83,68,56,0.5); border-radius: 4px; color: #c8c6c5; transition: all .25s; }
+  .qchip:hover { border-style: solid; border-color: rgba(255,183,120,0.5); color: #ffb778; box-shadow: 0 0 12px rgba(255,183,120,0.15); }
+  .kbchip { font-size: 11.5px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(83,68,56,0.5); color: #c8c6c5; transition: all .25s; }
+  .kbchip:hover { border-color: rgba(255,183,120,0.4); color: #ffb778; }
+  .kbchip.active { background: #ffb778; color: #131313; border-color: #ffb778; box-shadow: 0 0 14px rgba(255,183,120,0.35); }
+  .msg-user .bubble { background: linear-gradient(135deg, rgba(255,183,120,0.18), rgba(255,183,120,0.08)); border: 1px solid rgba(255,183,120,0.35); color: #ffe2c4; }
+  .msg-bot .bubble { background: rgba(19,19,19,0.6); border-left: 2px solid #ffb778; border-top: 1px solid rgba(255,255,255,0.06); border-right: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .badge-base { display: inline-block; padding: 3px 9px; border-radius: 3px; font-size: 11px; border: 1px solid rgba(83,68,56,0.5); margin-right: 4px; margin-top: 4px; }
+  .badge-ok { background: rgba(109,212,237,0.08); border-color: rgba(109,212,237,0.5); color: #6dd4ed; }
+  .badge-warn { background: rgba(255,180,171,0.08); border-color: rgba(255,180,171,0.5); color: #ffb4ab; }
+  .badge-dom { background: rgba(255,183,120,0.08); border-color: rgba(255,183,120,0.5); color: #ffb778; }
+  .badge-mode { background: #ffb778; color: #131313; border-color: #ffb778; }
+  .srcrow { font-size: 11.5px; border: 1px solid rgba(83,68,56,0.3); border-radius: 5px; padding: 9px 11px; margin-top: 7px; background: rgba(19,19,19,0.5); transition: border-color .25s; }
+  .srcrow:hover { border-color: rgba(255,183,120,0.35); }
+  .srcrow .st { font-weight: 600; color: #ffb778; font-size: 12.5px; }
+  .srcrow .sb { color: #d8c3b3; margin-top: 3px; font-size: 11px; white-space: pre-wrap; line-height: 1.55; }
+  .score { font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; background: rgba(40,40,40,0.8); color: #c8c6c5; padding: 1px 5px; border-radius: 2px; }
+  .warnbox { margin-top: 8px; padding: 9px 11px; border: 1px solid rgba(255,180,171,0.4); border-radius: 4px; background: rgba(255,180,171,0.06); font-size: 12px; color: #ffd5d0; }
+  .warnbox ul { margin: 4px 0 0; padding-left: 16px; }
+  .copy-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 4px 10px; font-size: 11px; border: 1px solid rgba(83,68,56,0.5); border-radius: 4px; color: #c8c6c5; transition: all .25s; }
+  .copy-btn:hover { border-color: rgba(255,183,120,0.5); color: #ffb778; }
+  .pipe-step { display: flex; gap: 14px; padding: 12px 16px; border-left: 2px solid rgba(255,183,120,0.45); background: linear-gradient(90deg, rgba(255,183,120,0.04), transparent); border-radius: 4px; transition: all .35s; }
+  .pipe-step:hover { border-left-color: #ffb778; background: linear-gradient(90deg, rgba(255,183,120,0.1), transparent); transform: translateX(4px); }
+  .pipe-step b { color: #ffb778; font-size: 12.5px; }
+  .pipe-step p { margin: 2px 0 0; font-size: 12px; color: #c8c6c5; }
+  .pipe-step .n { font-family: ui-monospace, monospace; color: #ffb778; font-weight: 600; min-width: 24px; }
 </style>
 </head>
 
 <body class="bg-background antialiased min-h-screen selection:bg-primary/30 selection:text-primary">
 
-<div class="ambient-glow"></div>
+<div class="ambient-orb"></div>
+<div class="grid-overlay"></div>
 <div class="noise"></div>
 
 <!-- ============== SIDE NAV ============== -->
-<nav class="fixed left-0 top-0 h-screen w-20 z-40 flex flex-col items-center py-4 bg-surface/80 backdrop-blur-xl border-r border-outline-variant/30">
+<nav class="fixed left-0 top-0 h-screen w-20 z-40 flex flex-col items-center py-4 bg-black/50 backdrop-blur-xl border-r border-outline-variant/30">
   <div class="mt-2 mb-10">
-    <span class="serif text-2xl text-primary italic font-bold tracking-tight">TG</span>
+    <span class="serif text-2xl text-primary italic font-bold tracking-tight amber-glow">TG</span>
   </div>
   <div class="flex flex-col gap-3 w-full items-center">
-    <button data-tab="intel" class="sidetab active relative w-full flex justify-center py-2 hover:bg-primary/10 transition" aria-label="Intelligence">
+    <button data-tab="intel" class="sidetab active relative w-full flex justify-center py-2 hover:bg-primary/10" aria-label="Intelligence">
       <span class="material-symbols-outlined">analytics</span>
     </button>
-    <button data-tab="archive" class="sidetab relative w-full flex justify-center py-2 text-secondary/60 hover:text-primary hover:bg-primary/10 transition" aria-label="Archive">
+    <button data-tab="archive" class="sidetab relative w-full flex justify-center py-2 text-secondary/60 hover:text-primary hover:bg-primary/10" aria-label="Archive">
       <span class="material-symbols-outlined">menu_book</span>
     </button>
-    <button data-tab="strategy" class="sidetab relative w-full flex justify-center py-2 text-secondary/60 hover:text-primary hover:bg-primary/10 transition" aria-label="Strategy">
+    <button data-tab="strategy" class="sidetab relative w-full flex justify-center py-2 text-secondary/60 hover:text-primary hover:bg-primary/10" aria-label="Strategy">
       <span class="material-symbols-outlined">gavel</span>
     </button>
-    <button data-tab="system" class="sidetab relative w-full flex justify-center py-2 text-secondary/60 hover:text-primary hover:bg-primary/10 transition" aria-label="System">
+    <button data-tab="system" class="sidetab relative w-full flex justify-center py-2 text-secondary/60 hover:text-primary hover:bg-primary/10" aria-label="System">
       <span class="material-symbols-outlined">history_edu</span>
     </button>
   </div>
@@ -159,11 +365,11 @@
 </nav>
 
 <!-- ============== TOP APP BAR ============== -->
-<header class="fixed top-0 left-20 right-0 h-20 z-30 px-10 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-outline-variant/40">
+<header class="fixed top-0 left-20 right-0 h-20 z-30 px-10 flex items-center justify-between bg-black/70 backdrop-blur-xl border-b border-outline-variant/30">
   <div class="flex items-center gap-4">
-    <h1 class="serif text-2xl text-on-surface font-semibold tracking-tight">TradeGuide v2</h1>
+    <h1 class="serif text-2xl text-on-surface font-semibold tracking-tight">TradeGuide<span class="display-it text-primary"> v2</span></h1>
     <div class="h-6 w-px bg-outline-variant/40"></div>
-    <span class="text-[11px] tracking-[0.2em] uppercase text-secondary/80 font-semibold">Elite Legal Intelligence</span>
+    <span class="text-[11px] tracking-[0.22em] uppercase text-secondary/80 font-semibold">Elite Legal Intelligence</span>
   </div>
   <div class="hidden md:flex gap-8 items-center text-sm">
     <a href="#" data-tab="intel" class="topnav text-on-surface-variant hover:text-primary transition py-2">Intelligence</a>
@@ -173,7 +379,7 @@
   </div>
   <div class="flex items-center gap-3">
     <div id="aiBadge" class="hidden md:flex items-center gap-2 text-[11px] px-3 py-1.5 rounded-full border border-outline-variant/40 text-secondary">
-      <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+      <span class="live-dot"></span>
       <span id="aiBadgeText">Rule Mode</span>
     </div>
     <button id="gearBtnTop" class="text-on-surface-variant hover:text-primary transition" aria-label="Settings">
@@ -185,43 +391,44 @@
 <!-- ============== MAIN ============== -->
 <main class="ml-20 mt-20 p-10 min-h-screen relative z-10">
 
-  <!-- ========== TAB: INTELLIGENCE (홈) ========== -->
+  <!-- ========== TAB: INTELLIGENCE ========== -->
   <section id="tab-intel" class="tab active">
     <!-- Hero -->
-    <div class="relative mb-12 text-center pt-6 pb-10">
-      <h2 class="serif text-5xl md:text-6xl font-semibold text-primary amber-glow leading-tight mb-4">
-        Navigate <span class="italic text-on-surface">the</span> Doctrine.
+    <div class="relative mb-12 text-center pt-10 pb-12 hero-title-wrap overflow-hidden">
+      <div class="particles" id="particles"></div>
+      <h2 class="display text-7xl md:text-8xl leading-[1.02] mb-5 amber-glow">
+        <span class="hero-title">Navigate</span> <span class="display-it text-on-surface/90">the</span> <span class="hero-title">Doctrine.</span>
       </h2>
-      <p class="max-w-2xl mx-auto text-on-surface-variant text-base leading-relaxed">
+      <p class="hero-sub max-w-2xl mx-auto text-on-surface-variant text-base leading-relaxed">
         WTO TRIPS 협정과 한미 통상법을 종합하는 고정밀 법무 인텔리전스.<br />
         검색·검증·생성이 한 캔버스에서 작동합니다.
       </p>
-      <div class="mt-6 flex justify-center gap-2 text-[11px] tracking-widest uppercase text-secondary/70">
+      <div class="hero-chips mt-7 flex justify-center gap-2 text-[11px] tracking-widest uppercase text-secondary/70 flex-wrap">
         <span class="px-2.5 py-1 border border-outline-variant/40 rounded">TF-IDF Retrieval</span>
         <span class="px-2.5 py-1 border border-outline-variant/40 rounded">Agentic Decomposition</span>
         <span class="px-2.5 py-1 border border-outline-variant/40 rounded">3-Rule Validation</span>
       </div>
     </div>
 
-    <!-- Grid: chat (8) + calc (4) -->
+    <!-- Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       <!-- Chat -->
-      <div class="lg:col-span-8 glass rounded-xl flex flex-col overflow-hidden min-h-[560px]">
+      <div class="lg:col-span-8 glass tilt unfold rounded-xl flex flex-col overflow-hidden min-h-[580px]">
         <div class="px-6 py-4 border-b border-outline-variant/30 flex items-center gap-3">
           <span class="material-symbols-outlined text-primary">forum</span>
           <div class="flex-1">
             <h3 class="serif text-lg text-on-surface">법규 상담</h3>
             <p class="text-[11px] text-secondary/70 uppercase tracking-widest">RAG · Agentic · Self-Validated</p>
           </div>
-          <span id="chatStatus" class="text-[10px] px-2 py-1 rounded border border-outline-variant/40 text-secondary"><span class="inline-block w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5 align-middle"></span><span>Rule Mode</span></span>
+          <span id="chatStatus" class="text-[10px] px-2.5 py-1 rounded-full border border-outline-variant/40 text-secondary flex items-center gap-2"><span class="live-dot"></span><span>Rule Mode</span></span>
         </div>
         <div id="chatBody" class="flex-1 overflow-y-auto px-6 py-5 space-y-4 scrollbar-hide" style="max-height: 460px;"></div>
-        <div class="px-4 py-3 border-t border-outline-variant/30 bg-surface-low/40">
+        <div class="px-4 py-3 border-t border-outline-variant/30 bg-surface-low/50">
           <div class="flex gap-2 items-end">
-            <span class="font-mono text-primary text-sm pb-2">&gt;_</span>
-            <textarea id="chatInput" rows="1" class="flex-1 bg-transparent border-none outline-none resize-none text-sm text-on-surface placeholder:text-on-surface-variant/40 font-mono" placeholder="법규를 질문하거나 조항을 입력하세요 (Enter 전송, Shift+Enter 줄바꿈)"></textarea>
-            <button id="sendBtn" class="bg-primary text-background w-9 h-9 rounded flex items-center justify-center hover:bg-primary-dim transition" aria-label="전송">
+            <span class="font-mono text-primary text-sm pb-2 select-none">&gt;_</span>
+            <textarea id="chatInput" rows="1" class="flex-1 bg-transparent border-none outline-none resize-none text-sm text-on-surface placeholder:text-on-surface-variant/40 font-mono py-2" placeholder="법규를 질문하거나 조항을 입력하세요 (Enter 전송, Shift+Enter 줄바꿈)"></textarea>
+            <button id="sendBtn" class="btn-primary w-9 h-9 rounded-md flex items-center justify-center" aria-label="전송">
               <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
             </button>
           </div>
@@ -235,7 +442,7 @@
       </div>
 
       <!-- Calculator -->
-      <div class="lg:col-span-4 glass rounded-xl overflow-hidden">
+      <div class="lg:col-span-4 glass tilt unfold rounded-xl overflow-hidden" style="transition-delay: .1s;">
         <div class="px-6 py-4 border-b border-outline-variant/30 flex items-center gap-3">
           <span class="material-symbols-outlined text-primary">calculate</span>
           <div>
@@ -253,7 +460,6 @@
             <label class="calc-label">HS 코드 (선택)</label>
             <input id="cHs" type="text" class="calc-input" placeholder="예: 8542.31" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </div>
-
           <div class="calc-section">
             <p class="calc-section-title">물량·가격</p>
             <label class="calc-label">수출 물량 (개)</label>
@@ -265,7 +471,6 @@
             <label class="calc-label">단위당 물류비 (USD · 선택)</label>
             <input id="cFreight" type="number" value="0" min="0" class="calc-input" />
           </div>
-
           <div class="calc-section">
             <p class="calc-section-title">관세·환율</p>
             <label class="calc-label">현재 관세율 (%)</label>
@@ -285,12 +490,11 @@
             <label class="calc-label">환율 (원/달러)</label>
             <input id="cFx" type="number" value="1380" min="0" class="calc-input" />
           </div>
-
-          <button id="calcBtn" class="w-full bg-primary text-background font-semibold tracking-wide py-3 rounded hover:bg-primary-dim transition amber-edge">
+          <button id="calcBtn" class="btn-primary w-full font-semibold tracking-wide py-3 rounded-md">
             마진 변화 계산
           </button>
           <div id="calcOut" class="hidden text-[13px] space-y-3 pt-2"></div>
-          <button id="reportBtn" class="hidden w-full border border-primary/50 text-primary py-2.5 rounded text-sm tracking-wide hover:bg-primary/10 transition">
+          <button id="reportBtn" class="hidden btn-ghost w-full py-2.5 rounded-md text-sm tracking-wide">
             보고서 PDF 저장 / 인쇄
           </button>
         </div>
@@ -298,12 +502,12 @@
     </div>
   </section>
 
-  <!-- ========== TAB: ARCHIVE (지식 베이스) ========== -->
+  <!-- ========== TAB: ARCHIVE ========== -->
   <section id="tab-archive" class="tab">
-    <div class="mb-10 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+    <div class="mb-10 flex flex-col md:flex-row md:justify-between md:items-end gap-4 unfold">
       <div>
-        <p class="text-[11px] tracking-[0.2em] uppercase text-primary mb-2">Knowledge Folio</p>
-        <h2 class="serif text-4xl text-on-surface mb-3">Legal Treaties Archive</h2>
+        <p class="text-[11px] tracking-[0.22em] uppercase text-primary mb-2">Knowledge Folio</p>
+        <h2 class="display text-5xl md:text-6xl text-on-surface mb-3 leading-[1.05]">Legal Treaties <span class="display-it text-primary/90">Archive</span></h2>
         <p class="text-on-surface-variant max-w-2xl">WTO TRIPS 협정과 한미 통상법 조항 폴리오. 도메인·유형별로 탐색하고 검색하세요.</p>
       </div>
       <div class="flex gap-2 flex-wrap">
@@ -314,30 +518,30 @@
       </div>
     </div>
 
-    <div class="relative mb-6">
+    <div class="relative mb-6 unfold" style="transition-delay: .1s;">
       <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/60">search</span>
-      <input id="kbSearch" type="text" placeholder="QUERY KNOWLEDGE BASE..." class="w-full bg-transparent border border-outline-variant/40 focus:border-primary outline-none rounded-lg pl-11 pr-4 py-3 text-sm tracking-wider font-mono" />
+      <input id="kbSearch" type="text" placeholder="QUERY KNOWLEDGE BASE..." class="w-full bg-transparent border border-outline-variant/40 focus:border-primary outline-none rounded-lg pl-11 pr-4 py-3 text-sm tracking-wider font-mono transition focus:shadow-[0_0_20px_rgba(255,183,120,0.15)]" />
     </div>
     <div id="kbCount" class="text-[11px] text-secondary/60 uppercase tracking-widest mb-4"></div>
     <div id="kbGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
   </section>
 
-  <!-- ========== TAB: STRATEGY (전략 캔버스) ========== -->
-  <section id="tab-strategy" class="tab">
-    <div class="mb-8 flex justify-between items-end flex-wrap gap-4">
+  <!-- ========== TAB: STRATEGY ========== -->
+  <section id="tab-strategy" class="tab tab-strategy">
+    <div class="mb-8 flex justify-between items-end flex-wrap gap-4 unfold">
       <div>
-        <p class="text-[11px] tracking-[0.2em] uppercase text-primary mb-2">Strategy Canvas</p>
-        <h2 class="serif text-4xl text-on-surface">한미 반도체 통상 시나리오</h2>
-        <p class="text-on-surface-variant text-sm mt-2">TRIPS 31조(c) + 무역법 301조 적용을 가정한 예시 분석.</p>
+        <p class="text-[11px] tracking-[0.22em] uppercase text-primary mb-2">Strategy Canvas</p>
+        <h2 class="display text-5xl md:text-6xl text-on-surface leading-[1.05]">US-Korea <span class="display-it text-primary/90">Semiconductor</span> 분쟁</h2>
+        <p class="text-on-surface-variant text-sm mt-2">TRIPS 31조(c) + 무역법 301조 적용을 가정한 시나리오 분석.</p>
       </div>
-      <button id="genMemoBtn" class="px-6 py-3 border border-primary/50 text-primary rounded font-semibold tracking-wider text-xs uppercase hover:bg-primary/10 transition amber-edge">
+      <button id="genMemoBtn" class="btn-ghost px-6 py-3 rounded-md font-semibold tracking-wider text-xs uppercase">
         Defense Memo 생성
       </button>
     </div>
 
     <div class="grid grid-cols-12 gap-6">
       <!-- Argument Tree -->
-      <section class="col-span-12 lg:col-span-8 glass rounded-xl p-6 min-h-[480px] flex flex-col">
+      <section class="col-span-12 lg:col-span-8 glass tilt rounded-xl p-6 min-h-[480px] flex flex-col unfold">
         <div class="flex justify-between items-center mb-5">
           <h4 class="serif text-lg text-on-surface">Argument Projection</h4>
           <div class="flex gap-1.5">
@@ -345,63 +549,71 @@
             <span class="text-[10px] font-mono px-2 py-1 border border-outline-variant/40 rounded text-secondary">Trade Act §301</span>
           </div>
         </div>
-        <div class="relative flex-1 rounded border border-outline-variant/20 bg-background/40 overflow-hidden">
-          <div class="absolute inset-0" style="background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:38px 38px;"></div>
-          <div class="relative h-full flex items-center px-6 py-6">
+        <div class="relative flex-1 rounded-lg border border-outline-variant/20 bg-black/30 overflow-hidden">
+          <div class="absolute inset-0" style="background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:40px 40px;"></div>
+          <!-- SVG connectors -->
+          <svg class="tree-svg absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 380" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="treeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#ffb778" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#ffb778" stop-opacity="0.15"/>
+              </linearGradient>
+            </defs>
+            <path d="M 200 190 C 280 190, 320 80, 420 80" fill="none" stroke="url(#treeGrad)" stroke-width="1.2" />
+            <path d="M 200 190 C 280 190, 320 190, 420 190" fill="none" stroke="url(#treeGrad)" stroke-width="1.2" />
+            <path d="M 200 190 C 280 190, 320 300, 420 300" fill="none" stroke="url(#treeGrad)" stroke-width="1.2" />
+          </svg>
+          <!-- Nodes -->
+          <div class="relative h-full px-6 py-6">
             <!-- Root -->
-            <div class="relative z-10 glass rounded-lg p-4 w-52 ring-primary-soft">
+            <div class="tree-node n1 absolute glass ring-primary-soft rounded-lg p-4 w-52" style="left: 2rem; top: 50%; transform: translateY(-50%);">
               <p class="text-[10px] tracking-widest uppercase text-primary mb-1">Primary Claim</p>
               <p class="text-sm text-on-surface leading-snug">반도체 강제실시 발동 조건 충족 여부</p>
             </div>
-            <!-- Connector horizontal -->
-            <div class="absolute" style="left:calc(1.5rem + 13rem); top:50%; width:3rem; height:1px; background:linear-gradient(90deg,rgba(255,183,120,0.5),rgba(255,183,120,0));"></div>
-            <!-- Branches -->
-            <div class="relative ml-16 flex flex-col gap-7 justify-center border-l border-outline-variant/30 pl-8 flex-1">
-              <div class="relative glass-hover glass rounded-lg p-4 max-w-md">
-                <div class="absolute -left-8 top-1/2 w-8 h-px bg-outline-variant/50"></div>
-                <p class="text-[10px] tracking-widest uppercase text-secondary mb-1">Defense Vector A</p>
-                <p class="text-sm text-on-surface mb-2">공공의 비상업적 사용 (TRIPS 31조(c)(i))</p>
-                <div class="flex items-center gap-2">
-                  <div class="flex-1 h-1 bg-surface-high rounded overflow-hidden"><div class="h-full bg-tertiary" style="width:72%"></div></div>
-                  <span class="font-mono text-[11px] text-tertiary">72%</span>
-                </div>
+            <!-- Branch A -->
+            <div class="tree-node n2 absolute glass glass-hover rounded-lg p-4 w-64" style="right: 2rem; top: 8%;">
+              <p class="text-[10px] tracking-widest uppercase text-secondary mb-1">Defense Vector A</p>
+              <p class="text-sm text-on-surface mb-2">공공의 비상업적 사용 (TRIPS 31조(c)(i))</p>
+              <div class="flex items-center gap-2">
+                <div class="flex-1 h-1 bg-surface-high rounded overflow-hidden"><div class="h-full bg-tertiary" style="width:72%"></div></div>
+                <span class="font-mono text-[11px] text-tertiary">72%</span>
               </div>
-              <div class="relative glass-hover glass rounded-lg p-4 max-w-md">
-                <div class="absolute -left-8 top-1/2 w-8 h-px bg-outline-variant/50"></div>
-                <p class="text-[10px] tracking-widest uppercase text-secondary mb-1">Defense Vector B</p>
-                <p class="text-sm text-on-surface mb-2">반경쟁 관행 시정 (TRIPS 31조(c)(ii))</p>
-                <div class="flex items-center gap-2">
-                  <div class="flex-1 h-1 bg-surface-high rounded overflow-hidden"><div class="h-full bg-primary" style="width:55%"></div></div>
-                  <span class="font-mono text-[11px] text-primary">55%</span>
-                </div>
+            </div>
+            <!-- Branch B -->
+            <div class="tree-node n3 absolute glass glass-hover rounded-lg p-4 w-64" style="right: 2rem; top: 50%; transform: translateY(-50%);">
+              <p class="text-[10px] tracking-widest uppercase text-secondary mb-1">Defense Vector B</p>
+              <p class="text-sm text-on-surface mb-2">반경쟁 관행 시정 (TRIPS 31조(c)(ii))</p>
+              <div class="flex items-center gap-2">
+                <div class="flex-1 h-1 bg-surface-high rounded overflow-hidden"><div class="h-full bg-primary" style="width:55%"></div></div>
+                <span class="font-mono text-[11px] text-primary">55%</span>
               </div>
-              <div class="relative glass-hover glass rounded-lg p-4 max-w-md">
-                <div class="absolute -left-8 top-1/2 w-8 h-px bg-outline-variant/50"></div>
-                <p class="text-[10px] tracking-widest uppercase text-secondary mb-1">Counter-Risk</p>
-                <p class="text-sm text-on-surface mb-2">공공보건 예외 오용 (도메인 혼동)</p>
-                <div class="flex items-center gap-2">
-                  <div class="flex-1 h-1 bg-surface-high rounded overflow-hidden"><div class="h-full bg-error" style="width:28%"></div></div>
-                  <span class="font-mono text-[11px] text-error">28%</span>
-                </div>
+            </div>
+            <!-- Counter Risk -->
+            <div class="tree-node n4 absolute glass glass-hover rounded-lg p-4 w-64" style="right: 2rem; bottom: 8%;">
+              <p class="text-[10px] tracking-widest uppercase text-secondary mb-1">Counter-Risk</p>
+              <p class="text-sm text-on-surface mb-2">공공보건 예외 오용 (도메인 혼동)</p>
+              <div class="flex items-center gap-2">
+                <div class="flex-1 h-1 bg-surface-high rounded overflow-hidden"><div class="h-full bg-error" style="width:28%"></div></div>
+                <span class="font-mono text-[11px] text-error">28%</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Right rail: Risk + Probability -->
+      <!-- Risk + Probability -->
       <section class="col-span-12 lg:col-span-4 flex flex-col gap-6">
-        <div class="glass rounded-xl p-6">
+        <div class="glass tilt rounded-xl p-6 unfold" style="transition-delay: .1s;">
           <h4 class="serif text-lg text-on-surface mb-5 pb-3 border-b border-outline-variant/30">Risk Assessment</h4>
           <div class="flex items-center justify-center mb-2">
-            <div class="relative w-36 h-36 flex items-center justify-center">
+            <div class="relative w-40 h-40 flex items-center justify-center">
               <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
-                <circle cx="50" cy="50" r="42" stroke="#2a2a2a" stroke-width="8" fill="none"></circle>
-                <circle cx="50" cy="50" r="42" stroke="#ffb778" stroke-width="8" fill="none"
-                  stroke-dasharray="264" stroke-dashoffset="92" stroke-linecap="round" style="filter:drop-shadow(0 0 6px rgba(255,183,120,0.4))"></circle>
+                <circle cx="50" cy="50" r="42" stroke="#2a2a2a" stroke-width="6" fill="none"></circle>
+                <circle class="gauge-ring" cx="50" cy="50" r="42" stroke="#ffb778" stroke-width="6" fill="none"
+                  stroke-linecap="round" style="filter:drop-shadow(0 0 6px rgba(255,183,120,0.5))"></circle>
               </svg>
               <div class="absolute text-center">
-                <div class="serif text-3xl text-primary amber-glow leading-none">65</div>
+                <div class="serif text-4xl text-primary amber-glow leading-none"><span id="gaugeNum">0</span></div>
                 <div class="text-[10px] tracking-widest uppercase text-secondary mt-1">Exposure</div>
               </div>
             </div>
@@ -409,36 +621,27 @@
           <p class="text-[11px] text-center text-on-surface-variant">중간-상 위험 · 패널 단계 대응 필요</p>
         </div>
 
-        <div class="glass rounded-xl p-6 flex-1">
+        <div class="glass tilt rounded-xl p-6 flex-1 unfold" style="transition-delay: .2s;">
           <h4 class="serif text-lg text-on-surface mb-5 pb-3 border-b border-outline-variant/30">Probability Matrix</h4>
           <div class="space-y-4">
             <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-on-surface-variant">Panel Stage</span>
-                <span class="font-mono text-primary">62%</span>
-              </div>
-              <div class="h-1.5 bg-surface-high rounded overflow-hidden"><div class="h-full bg-primary" style="width:62%"></div></div>
+              <div class="flex justify-between text-xs mb-1.5"><span class="text-on-surface-variant">Panel Stage</span><span class="font-mono text-primary">62%</span></div>
+              <div class="h-1.5 bg-surface-high rounded overflow-hidden"><div class="pb-fill h-full bg-primary" style="--pb-w:62%"></div></div>
             </div>
             <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-on-surface-variant">Appellate Body</span>
-                <span class="font-mono text-primary">48%</span>
-              </div>
-              <div class="h-1.5 bg-surface-high rounded overflow-hidden"><div class="h-full bg-primary/70" style="width:48%"></div></div>
+              <div class="flex justify-between text-xs mb-1.5"><span class="text-on-surface-variant">Appellate Body</span><span class="font-mono text-primary">48%</span></div>
+              <div class="h-1.5 bg-surface-high rounded overflow-hidden"><div class="pb-fill h-full bg-primary/70" style="--pb-w:48%"></div></div>
             </div>
             <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-on-surface-variant">Settlement Potential</span>
-                <span class="font-mono text-tertiary">81%</span>
-              </div>
-              <div class="h-1.5 bg-surface-high rounded overflow-hidden"><div class="h-full bg-tertiary" style="width:81%"></div></div>
+              <div class="flex justify-between text-xs mb-1.5"><span class="text-on-surface-variant">Settlement Potential</span><span class="font-mono text-tertiary">81%</span></div>
+              <div class="h-1.5 bg-surface-high rounded overflow-hidden"><div class="pb-fill h-full bg-tertiary" style="--pb-w:81%"></div></div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- Precedent strip -->
-      <section class="col-span-12 glass rounded-xl p-6">
+      <section class="col-span-12 glass tilt rounded-xl p-6 unfold" style="transition-delay: .3s;">
         <div class="flex items-center gap-2 mb-5">
           <span class="material-symbols-outlined text-primary">history_edu</span>
           <h4 class="serif text-lg text-on-surface">Precedent Mapping</h4>
@@ -449,57 +652,57 @@
     </div>
   </section>
 
-  <!-- ========== TAB: SYSTEM (AI 구동 원리 + 시스템 아키텍처) ========== -->
+  <!-- ========== TAB: SYSTEM ========== -->
   <section id="tab-system" class="tab">
-    <div class="mb-10">
-      <p class="text-[11px] tracking-[0.2em] uppercase text-primary mb-2">How it works</p>
-      <h2 class="serif text-4xl text-on-surface mb-3">시스템 아키텍처 & 추론 원리</h2>
+    <div class="mb-10 unfold">
+      <p class="text-[11px] tracking-[0.22em] uppercase text-primary mb-2">How it works</p>
+      <h2 class="display text-5xl md:text-6xl text-on-surface mb-3 leading-[1.05]">시스템 아키텍처<span class="display-it text-primary/90"> & </span>추론 원리</h2>
       <p class="text-on-surface-variant max-w-2xl">출처 기반 검색·룰 기반 답변·3유형 검증·선택적 LLM 생성을 한 파이프라인에 통합.</p>
     </div>
 
-    <h3 class="serif text-xl text-on-surface mb-4">RAG 구조</h3>
+    <h3 class="serif text-xl text-on-surface mb-4 unfold">RAG 구조</h3>
     <div class="grid md:grid-cols-3 gap-4 mb-12">
-      <div class="glass rounded-lg p-5">
+      <div class="glass card-lift rounded-lg p-5 halo unfold">
         <span class="material-symbols-outlined text-primary mb-3">database</span>
         <p class="serif text-base text-on-surface mb-1">지식 베이스</p>
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">WTO TRIPS 7개 조항 + 한미 통상법 3개 항목 = 총 10개 문서를 정적 색인.</p>
       </div>
-      <div class="glass rounded-lg p-5">
+      <div class="glass card-lift rounded-lg p-5 halo unfold" style="transition-delay:.1s">
         <span class="material-symbols-outlined text-primary mb-3">search</span>
         <p class="serif text-base text-on-surface mb-1">TF-IDF 검색</p>
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">한국어 조사 분리·동의어 확장 후 코사인 유사도로 Top-3 추출, 도메인 일치 ×1.35 가중치.</p>
       </div>
-      <div class="glass rounded-lg p-5">
+      <div class="glass card-lift rounded-lg p-5 halo unfold" style="transition-delay:.2s">
         <span class="material-symbols-outlined text-primary mb-3">edit_note</span>
         <p class="serif text-base text-on-surface mb-1">답변 생성</p>
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">기본은 룰 기반 템플릿. 설정에서 API 키 입력 시 검색 결과를 컨텍스트로 LLM 생성으로 전환.</p>
       </div>
     </div>
 
-    <h3 class="serif text-xl text-on-surface mb-4">2차 핵심 — Agentic + 자체 검증</h3>
+    <h3 class="serif text-xl text-on-surface mb-4 unfold">2차 핵심 — Agentic + 자체 검증</h3>
     <div class="grid md:grid-cols-3 gap-4 mb-12">
-      <div class="glass rounded-lg p-5">
+      <div class="glass card-lift rounded-lg p-5 halo unfold">
         <span class="material-symbols-outlined text-primary mb-3">share</span>
         <p class="serif text-base text-on-surface mb-1">질문 분해</p>
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">조항 번호가 여럿이거나 "비교/차이" 키워드 검출 시 하위 질문으로 분해해 각각 검색.</p>
       </div>
-      <div class="glass rounded-lg p-5">
+      <div class="glass card-lift rounded-lg p-5 halo unfold" style="transition-delay:.1s">
         <span class="material-symbols-outlined text-primary mb-3">merge</span>
         <p class="serif text-base text-on-surface mb-1">다중 검색·통합</p>
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">하위 질문별 Top-3 결과를 병합해 통합 답변을 생성.</p>
       </div>
-      <div class="glass rounded-lg p-5">
+      <div class="glass card-lift rounded-lg p-5 halo unfold" style="transition-delay:.2s">
         <span class="material-symbols-outlined text-primary mb-3">verified_user</span>
         <p class="serif text-base text-on-surface mb-1">3유형 검증</p>
         <p class="text-[12.5px] text-on-surface-variant leading-relaxed">개념 대체 · 도메인 혼동 · 기간 혼동 휴리스틱 검사 → ★★★ / ★★ 표시.</p>
       </div>
     </div>
 
-    <h3 class="serif text-xl text-on-surface mb-4">RAG 파이프라인</h3>
-    <div id="pipeline" class="space-y-2 mb-12"></div>
+    <h3 class="serif text-xl text-on-surface mb-4 unfold">RAG 파이프라인</h3>
+    <div id="pipeline" class="space-y-2 mb-12 unfold"></div>
 
-    <h3 class="serif text-xl text-on-surface mb-4">1차 → 2차 개선</h3>
-    <div class="glass rounded-lg overflow-hidden">
+    <h3 class="serif text-xl text-on-surface mb-4 unfold">1차 → 2차 개선</h3>
+    <div class="glass rounded-lg overflow-hidden unfold">
       <table class="w-full text-sm">
         <thead class="bg-surface-high/50">
           <tr>
@@ -525,7 +728,7 @@
 </main>
 
 <!-- ============== SETTINGS MODAL ============== -->
-<div id="modalBg" class="modal-bg fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-4">
+<div id="modalBg" class="modal-bg fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
   <div class="w-full max-w-md glass rounded-xl overflow-hidden">
     <div class="px-5 py-4 bg-surface-high/60 border-b border-outline-variant/30 flex justify-between items-center">
       <h3 class="serif text-base text-on-surface">AI 답변 설정</h3>
@@ -551,60 +754,27 @@
         <input id="mAi" type="checkbox" class="w-4 h-4 accent-primary" />
       </div>
       <div class="text-[11px] text-secondary/70 bg-surface-low/40 border border-outline-variant/20 rounded p-3 leading-relaxed">
-        API 키는 이 브라우저(localStorage)에만 저장되며 별도 서버로 전송되지 않습니다. 질문 시 키는 Anthropic API로만 직접 전송됩니다. 공용 기기에서는 사용 후 '키 삭제'를 눌러주세요. 키가 없거나 AI 모드가 꺼져 있으면 기존 TF-IDF 룰 기반 답변이 사용됩니다.
+        API 키는 이 브라우저(localStorage)에만 저장되며 별도 서버로 전송되지 않습니다. 질문 시 키는 Anthropic API로만 직접 전송됩니다. 공용 기기에서는 사용 후 '키 삭제'를 눌러주세요.
       </div>
       <div class="flex gap-2 pt-1">
         <button id="mClear" class="flex-1 py-2.5 rounded border border-outline-variant/40 text-error text-sm hover:bg-error/10 transition">키 삭제</button>
-        <button id="mSave" class="flex-1 py-2.5 rounded bg-primary text-background text-sm font-semibold hover:bg-primary-dim transition">저장</button>
+        <button id="mSave" class="flex-1 btn-primary py-2.5 rounded text-sm font-semibold">저장</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============== REPORT SHEET (PRINT) ============== -->
+<!-- Report sheet (hidden, used for print) -->
 <div id="reportSheet"></div>
-
-<!-- Custom small utility classes for calculator -->
-<style>
-  .calc-section { padding: 6px 0; }
-  .calc-section-title { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #ffb778; font-weight: 600; margin-bottom: 8px; border-bottom: 1px solid rgba(255,183,120,0.12); padding-bottom: 4px; }
-  .calc-label { display: block; font-size: 11px; letter-spacing: 0.06em; color: #c8c6c5; margin-top: 8px; margin-bottom: 4px; }
-  .calc-input { width: 100%; background: rgba(19,19,19,0.6); border: 1px solid rgba(83,68,56,0.55); border-radius: 4px; padding: 9px 11px; font-size: 13px; color: #e2e2e2; outline: none; font-family: inherit; }
-  .calc-input:focus { border-color: #ffb778; box-shadow: 0 0 0 1px rgba(255,183,120,0.35); }
-  .calc-input::placeholder { color: rgba(216,195,179,0.35); }
-  .qchip { font-size: 11px; padding: 4px 9px; border: 1px dashed rgba(83,68,56,0.5); border-radius: 4px; color: #c8c6c5; transition: all .2s; }
-  .qchip:hover { border-style: solid; border-color: rgba(255,183,120,0.5); color: #ffb778; }
-  .kbchip { font-size: 11.5px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(83,68,56,0.5); color: #c8c6c5; transition: all .2s; }
-  .kbchip:hover { border-color: rgba(255,183,120,0.4); color: #ffb778; }
-  .kbchip.active { background: #ffb778; color: #131313; border-color: #ffb778; }
-  .msg-user .bubble { background: rgba(255,183,120,0.12); border: 1px solid rgba(255,183,120,0.35); color: #ffe2c4; }
-  .msg-bot .bubble { background: rgba(19,19,19,0.55); border-left: 2px solid #ffb778; border-top: 1px solid rgba(255,255,255,0.06); border-right: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
-  .badge-base { display: inline-block; padding: 3px 9px; border-radius: 3px; font-size: 11px; border: 1px solid rgba(83,68,56,0.5); margin-right: 4px; margin-top: 4px; }
-  .badge-ok { background: rgba(109,212,237,0.08); border-color: rgba(109,212,237,0.5); color: #6dd4ed; }
-  .badge-warn { background: rgba(255,180,171,0.08); border-color: rgba(255,180,171,0.5); color: #ffb4ab; }
-  .badge-dom { background: rgba(255,183,120,0.08); border-color: rgba(255,183,120,0.5); color: #ffb778; }
-  .badge-mode { background: #ffb778; color: #131313; border-color: #ffb778; }
-  .srcrow { font-size: 11.5px; border: 1px solid rgba(83,68,56,0.3); border-radius: 4px; padding: 8px 10px; margin-top: 6px; background: rgba(19,19,19,0.4); }
-  .srcrow .st { font-weight: 600; color: #ffb778; font-size: 12.5px; }
-  .srcrow .sb { color: #d8c3b3; margin-top: 3px; font-size: 11px; white-space: pre-wrap; line-height: 1.55; }
-  .score { font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; background: rgba(40,40,40,0.8); color: #c8c6c5; padding: 1px 5px; border-radius: 2px; }
-  .warnbox { margin-top: 8px; padding: 9px 11px; border: 1px solid rgba(255,180,171,0.4); border-radius: 4px; background: rgba(255,180,171,0.06); font-size: 12px; color: #ffd5d0; }
-  .warnbox ul { margin: 4px 0 0; padding-left: 16px; }
-  .copy-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 4px 10px; font-size: 11px; border: 1px solid rgba(83,68,56,0.5); border-radius: 3px; color: #c8c6c5; transition: all .2s; }
-  .copy-btn:hover { border-color: rgba(255,183,120,0.5); color: #ffb778; }
-  .pipe-step { display: flex; gap: 14px; padding: 11px 14px; border-left: 2px solid rgba(255,183,120,0.5); background: rgba(31,31,31,0.5); border-radius: 4px; }
-  .pipe-step b { color: #ffb778; font-size: 12px; }
-  .pipe-step p { margin: 2px 0 0; font-size: 12px; color: #c8c6c5; }
-  .pipe-step .n { font-family: ui-monospace, monospace; color: #ffb778; font-weight: 600; min-width: 24px; }
-</style>
 
 <script>
 /* ============================================================
- * TradeGuide v2 — single-file client-side RAG (v3 redesign)
- * 모든 검색·검증·생성·계산기 엔진은 v2에서 이식, UI는 Stitch 디자인.
+ * TradeGuide v2 — v3 redesign (enhanced cinematic edition)
+ * Engine: TF-IDF + agentic decomposition + 3-rule validation +
+ * BYO-key LLM mode + SME calculator + print-to-PDF report.
  * ============================================================ */
 
-/* ---------- 1. 법규 데이터 (TRIPS 7 + 한미 통상법 3) ---------- */
+/* ---------- 1. Corpus ---------- */
 const CORPUS = [
   { docId:"art27", label:"TRIPS 27조", category:"협정", domain:"일반", date:"1995.01.01",
     title:"TRIPS 제27조 — 특허의 대상 (진보성)", titleEn:"TRIPS Article 27 — Patentable Subject Matter",
@@ -658,7 +828,6 @@ const CORPUS = [
     text:"무역법 제301조는 외국의 불공정 무역 관행에 대응하기 위한 조사·보복 절차를 규정한다. 현재 16개 경제주체를 대상으로 조사가 진행 중이며, 제122조와 달리 관세율 상한이 없고 품목별로 차등 관세를 부과할 수 있다. 조사는 일정 기간을 거쳐 완료되며, 그 결과에 따라 보복 관세의 범위와 세율이 결정된다." },
 ];
 
-/* ---------- 2. 동의어 ---------- */
 const SYNONYMS = [
   ["강제실시권","compulsory licensing","compulsory","licensing","강제실시"],
   ["진보성","inventive step","inventive","non-obvious","nonobvious"],
@@ -679,8 +848,8 @@ const SYNONYMS = [
   ["한미fta","korus","자유무역협정","fta"],
 ];
 
-/* ---------- 3. 토크나이저 ---------- */
 const KO_PARTICLES = ["은","는","이","가","을","를","의","에","에서","으로","로","와","과","도","만","이나","나","이라","라","이며","며","하다","하며","하고","한다","되며","된다","되는","되어","같은","같이","관련","대한","대해","위한","포함","있는","없는","그리고","그러나","또한","혹은","또는"];
+
 function tokenize(str){
   if(!str) return [];
   let s = str.toLowerCase().replace(/[　-〿＀-￯!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g," ");
@@ -705,7 +874,6 @@ function tokenize(str){
   return exp;
 }
 
-/* ---------- 4. TF-IDF ---------- */
 const DOC_TOKENS = CORPUS.map(d=>tokenize(d.title+" "+d.text+" "+d.keywords.join(" ")));
 const N = CORPUS.length, DF = {};
 for(let toks of DOC_TOKENS){ const seen=new Set(); for(let t of toks){ if(!seen.has(t)){ DF[t]=(DF[t]||0)+1; seen.add(t); } } }
@@ -741,7 +909,6 @@ function search(query, k=3){
   return sc.slice(0,k);
 }
 
-/* ---------- 5. 질문 분해 ---------- */
 function decompose(q){
   const am = [...q.matchAll(/제?\s*(\d{1,3})\s*조(?:\s*\(([a-z])\))?/gi)];
   const arts = [...new Set(am.map(m=>`제${m[1]}조${m[2]?"("+m[2]+")":""}`))];
@@ -762,7 +929,6 @@ function decompose(q){
   return { decomposed:false, reason:"단일 질문", subs:[q] };
 }
 
-/* ---------- 6. 답변 빌드 ---------- */
 function buildAnswer(q, hitsList){
   const merged={};
   for(let bl of hitsList) for(let h of bl.hits) if(!merged[h.doc.docId] || merged[h.doc.docId].score<h.score) merged[h.doc.docId]=h;
@@ -788,7 +954,6 @@ function buildAnswer(q, hitsList){
   return { text:parts.join("\n"), cited:top.map(t=>t.doc) };
 }
 
-/* ---------- 7. 검증 ---------- */
 function validate(q, ans, cited){
   const w=[]; const lo=ans.toLowerCase();
   if(/\bcreativity\b/.test(lo) || /\boriginality\b/.test(lo) || /창작성|독창성/.test(ans)){
@@ -816,12 +981,11 @@ function runPipeline(q){
   return { dec, hitsList:hits, ans, ver };
 }
 
-/* ---------- 8. 유틸 ---------- */
 const $ = id=>document.getElementById(id);
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
 function nowTime(){ const d=new Date(); let h=d.getHours(); const m=String(d.getMinutes()).padStart(2,"0"); const ap=h<12?"오전":"오후"; h=h%12; if(h===0) h=12; return `${ap} ${h}:${m}`; }
 
-/* ---------- 9. 설정 (BYO API 키) ---------- */
+/* ---------- 9. Settings (BYO key) ---------- */
 function loadCfg(){ return {
   key: localStorage.getItem("tgv3_apikey") || "",
   model: localStorage.getItem("tgv3_model") || "claude-opus-4-7",
@@ -835,6 +999,8 @@ function updateAiBadge(){
   $("chatStatus").querySelector("span:last-child").textContent = t;
   $("aiBadge").classList.toggle("border-primary/50", on);
   $("aiBadge").classList.toggle("text-primary", on);
+  $("chatStatus").querySelector(".live-dot").classList.toggle("amber", on);
+  $("aiBadge").querySelector(".live-dot").classList.toggle("amber", on);
 }
 
 async function callClaude(question, docs){
@@ -859,19 +1025,29 @@ async function callClaude(question, docs){
   return blk ? blk.text.trim() : "(빈 응답)";
 }
 
-/* ---------- 10. 탭 전환 ---------- */
+/* ---------- 10. Tabs ---------- */
 function switchTab(name){
-  document.querySelectorAll(".sidetab").forEach(b=>{ b.classList.toggle("active", b.dataset.tab===name); if(b.dataset.tab!==name) b.classList.add("text-secondary/60"); else b.classList.remove("text-secondary/60"); });
-  document.querySelectorAll(".topnav").forEach(a=>{ a.classList.toggle("text-primary", a.dataset.tab===name); a.classList.toggle("text-on-surface-variant", a.dataset.tab!==name); });
+  document.querySelectorAll(".sidetab").forEach(b=>{
+    const on = b.dataset.tab===name;
+    b.classList.toggle("active", on);
+    b.classList.toggle("text-secondary/60", !on);
+  });
+  document.querySelectorAll(".topnav").forEach(a=>{
+    const on = a.dataset.tab===name;
+    a.classList.toggle("text-primary", on);
+    a.classList.toggle("text-on-surface-variant", !on);
+  });
   const target = document.getElementById("tab-"+name);
   document.querySelectorAll(".tab").forEach(s=> s.classList.toggle("active", s === target));
-  window.scrollTo({top:0, behavior:"smooth"});
+  window.scrollTo({ top:0, behavior:"smooth" });
+  setTimeout(()=> retriggerObserver(), 50);
+  if(name === "strategy") setTimeout(animateGauge, 600);
 }
 document.querySelectorAll("[data-tab]").forEach(el=>{
   el.addEventListener("click", e=>{ e.preventDefault(); switchTab(el.dataset.tab); });
 });
 
-/* ---------- 11. 챗 ---------- */
+/* ---------- 11. Chat ---------- */
 const chatBody = $("chatBody");
 function addMsg(role, html){
   const wrap = document.createElement("div");
@@ -898,7 +1074,7 @@ function greeting(){
 
 function renderAnswer(question, answerText, hitsList, dec, ver, mode){
   let html = `<div><span class="badge-base badge-mode">${mode==="AI"?"AI 생성":"룰 기반"}</span></div>`;
-  html += `<div class="ans-text mt-2">${escapeHtml(answerText)}</div>`;
+  html += `<div class="ans-text mt-2 whitespace-pre-wrap">${escapeHtml(answerText)}</div>`;
   html += `<div class="mt-2">`;
   html += ver.pass ? `<span class="badge-base badge-ok">검증 통과 ★★★</span>` : `<span class="badge-base badge-warn">검증 경고 ★★</span>`;
   html += `<span class="badge-base badge-dom">${escapeHtml(inferDomain(tokenize(question)))}</span></div>`;
@@ -908,7 +1084,7 @@ function renderAnswer(question, answerText, hitsList, dec, ver, mode){
   for(let bl of hitsList) for(let h of bl.hits) if(!merged[h.doc.docId] || merged[h.doc.docId].score<h.score) merged[h.doc.docId]=h;
   const top3 = Object.values(merged).sort((a,b)=>b.score-a.score).slice(0,3);
 
-  html += `<details class="mt-3"><summary class="text-[11px] text-primary uppercase tracking-widest hover:text-primary-dim transition">▾ 출처 조항 Top-3 (TF-IDF)</summary>`;
+  html += `<details class="mt-3"><summary class="text-[11px] text-primary uppercase tracking-widest hover:text-primary-dim transition cursor-pointer select-none">▾ 출처 조항 Top-3 (TF-IDF)</summary>`;
   if(top3.length===0) html += `<div class="srcrow">검색 결과 없음.</div>`;
   else for(let h of top3){
     html += `<div class="srcrow">
@@ -919,7 +1095,7 @@ function renderAnswer(question, answerText, hitsList, dec, ver, mode){
   }
   html += `</details>`;
 
-  html += `<details class="mt-2"><summary class="text-[11px] text-primary uppercase tracking-widest hover:text-primary-dim transition">▾ 추론 과정</summary>`;
+  html += `<details class="mt-2"><summary class="text-[11px] text-primary uppercase tracking-widest hover:text-primary-dim transition cursor-pointer select-none">▾ 추론 과정</summary>`;
   html += `<div class="text-[11.5px] mt-2 text-on-surface-variant"><b class="text-on-surface">분해:</b> ${dec.decomposed?"분해됨":"분해 없음"} (${escapeHtml(dec.reason)})</div><ol class="ml-4 mt-1 text-[11px] text-on-surface-variant list-decimal space-y-1">`;
   hitsList.forEach((bl,i)=>{
     html += `<li><b class="text-on-surface">${escapeHtml(bl.subQ)}</b>: ` + (bl.hits.length===0 ? "검색 결과 없음" : bl.hits.map(h=>`<span class="text-primary">[${escapeHtml(h.doc.label)}]</span> ${h.score.toFixed(3)}`).join(" · ")) + `</li>`;
@@ -960,13 +1136,13 @@ chatBody.addEventListener("click", e=>{
   if(navigator.clipboard) navigator.clipboard.writeText(txt).then(done,done); else done();
 });
 
-/* ---------- 12. 지식 베이스 ---------- */
+/* ---------- 12. KB ---------- */
 let kbFilter = "전체";
 function renderKb(){
   const q = $("kbSearch").value.trim().toLowerCase();
   const g = $("kbGrid"); g.innerHTML = "";
   let shown = 0;
-  CORPUS.forEach(d=>{
+  CORPUS.forEach((d,idx)=>{
     if(kbFilter !== "전체" && d.category !== kbFilter) return;
     if(q){
       const hay = (d.title+" "+d.titleEn+" "+d.text+" "+d.tags.join(" ")+" "+d.keywords.join(" ")).toLowerCase();
@@ -974,12 +1150,13 @@ function renderKb(){
     }
     shown++;
     const card = document.createElement("div");
-    card.className = "glass glass-hover rounded-xl p-5 cursor-pointer relative overflow-hidden group";
+    card.className = "glass card-lift tilt halo unfold rounded-xl p-5 cursor-pointer relative overflow-hidden group";
+    card.style.transitionDelay = `${idx*0.06}s`;
     const tone = d.category==="판례" ? "border-l-error/40" : d.category==="협정" ? "border-l-primary/40" : "border-l-tertiary/40";
     card.classList.add("border-l-2", tone);
     const desc = d.text.replace(/([.!?。])\s+/g,"$1\n").split("\n").slice(0,2).join(" ");
     card.innerHTML = `
-      <div class="absolute -right-12 -top-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition pointer-events-none"></div>
+      <div class="absolute -right-12 -top-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/15 transition-all duration-700 pointer-events-none"></div>
       <div class="flex justify-between items-start mb-3 relative">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings:'FILL' 1">${d.category==="판례"?"gavel":d.category==="법률"?"description":"menu_book"}</span>
@@ -995,7 +1172,7 @@ function renderKb(){
       <div class="kfull hidden mt-3 pt-3 border-t border-outline-variant/30 text-[12px] text-on-surface-variant leading-relaxed relative">${escapeHtml(d.text)}</div>
       <div class="mt-4 flex gap-2 relative">
         <button class="ka text-[10px] tracking-wider uppercase px-3 py-1.5 border border-outline-variant/40 rounded hover:border-primary hover:text-primary transition" data-act="toggle">전체 보기</button>
-        <button class="ka text-[10px] tracking-wider uppercase px-3 py-1.5 bg-primary text-background rounded hover:bg-primary-dim transition" data-act="ask" data-q="${escapeHtml(d.label+"의 핵심 내용은 무엇인가?")}">이 조항으로 질문</button>
+        <button class="ka text-[10px] tracking-wider uppercase px-3 py-1.5 btn-primary rounded" data-act="ask" data-q="${escapeHtml(d.label+"의 핵심 내용은 무엇인가?")}">이 조항으로 질문</button>
       </div>
     `;
     card.querySelectorAll(".ka").forEach(btn=>{
@@ -1006,15 +1183,14 @@ function renderKb(){
           const isOpen = !full.classList.contains("hidden");
           full.classList.toggle("hidden");
           btn.textContent = isOpen ? "전체 보기" : "접기";
-        } else {
-          switchTab("intel"); sendQuestion(btn.dataset.q);
-        }
+        } else { switchTab("intel"); sendQuestion(btn.dataset.q); }
       });
     });
     g.appendChild(card);
   });
   $("kbCount").textContent = `${shown}개 조항`;
   if(shown===0) g.innerHTML = `<div class="col-span-full text-secondary/50 text-sm py-8 text-center">검색 결과 없음.</div>`;
+  retriggerObserver();
 }
 $("kbSearch").addEventListener("input", renderKb);
 document.querySelectorAll(".kbchip").forEach(c=>{
@@ -1026,19 +1202,19 @@ document.querySelectorAll(".kbchip").forEach(c=>{
 });
 document.querySelector('.kbchip[data-cat="전체"]').classList.add("active");
 
-/* ---------- 13. 전략 캔버스: precedent strip ---------- */
+/* ---------- 13. Strategy ---------- */
 function renderPrecedents(){
-  const strip = $("precedentStrip");
+  const strip = document.getElementById("precedentStrip");
   const items = [
     { doc: CORPUS.find(d=>d.docId==="art31c"), tone:"primary", note:"본 분쟁의 핵심 근거 조항" },
     { doc: CORPUS.find(d=>d.docId==="sec301"), tone:"tertiary", note:"발동 절차의 미국 측 근거" },
-    { doc: CORPUS.find(d=>d.docId==="ieepa"), tone:"error", note:"권한 한계 판례" },
-    { doc: CORPUS.find(d=>d.docId==="art33"), tone:"secondary", note:"존속기간 비교 참조" },
+    { doc: CORPUS.find(d=>d.docId==="ieepa"),  tone:"error",  note:"권한 한계 판례" },
+    { doc: CORPUS.find(d=>d.docId==="art33"),  tone:"secondary", note:"존속기간 비교 참조" },
   ];
-  strip.innerHTML = items.map(it=>{
+  strip.innerHTML = items.map((it,i)=>{
     const d = it.doc;
-    const dot = { primary:"bg-primary shadow-[0_0_8px_rgba(255,183,120,0.8)]", tertiary:"bg-tertiary", error:"bg-error", secondary:"bg-secondary" }[it.tone];
-    return `<div class="min-w-[280px] max-w-[280px] glass rounded-lg p-4 glass-hover cursor-pointer" data-tab="archive">
+    const dot = { primary:"bg-primary shadow-[0_0_10px_rgba(255,183,120,0.9)]", tertiary:"bg-tertiary", error:"bg-error", secondary:"bg-secondary" }[it.tone];
+    return `<div class="min-w-[280px] max-w-[280px] glass card-lift halo rounded-lg p-4 cursor-pointer" data-tab="archive" style="transition-delay:${i*0.08}s">
       <div class="flex justify-between items-start mb-2">
         <span class="text-[10px] font-mono px-2 py-0.5 bg-surface-bright rounded text-secondary uppercase tracking-widest">${escapeHtml(d.label)}</span>
         <span class="w-2 h-2 rounded-full ${dot} mt-1"></span>
@@ -1051,12 +1227,28 @@ function renderPrecedents(){
 }
 renderPrecedents();
 
-$("genMemoBtn").addEventListener("click", ()=>{
+document.getElementById("genMemoBtn").addEventListener("click", ()=>{
   switchTab("intel");
   sendQuestion("반도체 강제실시 분쟁 시 TRIPS 31조(c)와 무역법 301조를 함께 고려한 방어 논리를 정리해줘");
 });
 
-/* ---------- 14. 시스템 페이지: 파이프라인 ---------- */
+/* ---------- Gauge count-up ---------- */
+let gaugeAnimated = false;
+function animateGauge(){
+  if(gaugeAnimated) return;
+  gaugeAnimated = true;
+  const target = 65, el = document.getElementById("gaugeNum");
+  const start = performance.now(), dur = 1400;
+  function step(t){
+    const p = Math.min(1, (t-start)/dur);
+    const e = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(target * e);
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ---------- 14. Pipeline ---------- */
 const PIPELINE = [
   ["01","사용자 질문 입력","예: \"제33조와 제38조의 보호기간 차이는?\""],
   ["02","질문 분해 (Agentic)","조항 번호가 여럿이거나 비교 키워드가 있으면 하위 질문으로 분해"],
@@ -1068,14 +1260,13 @@ const PIPELINE = [
   ["08","신뢰도 표시","검증 통과 ★★★ / 경고 ★★ + 출처 점수 노출"],
 ];
 function renderPipeline(){
-  const wrap = $("pipeline");
-  wrap.innerHTML = PIPELINE.map(s=>
+  $("pipeline").innerHTML = PIPELINE.map(s=>
     `<div class="pipe-step"><span class="n">${s[0]}</span><div><b>${escapeHtml(s[1])}</b><p>${escapeHtml(s[2])}</p></div></div>`
   ).join("");
 }
 renderPipeline();
 
-/* ---------- 15. 계산기 ---------- */
+/* ---------- 15. Calculator ---------- */
 function won(n){ return "₩"+Math.round(n).toLocaleString("ko-KR"); }
 function usd(n){ return "$"+n.toFixed(2); }
 function intc(n){ return Math.round(n).toLocaleString("ko-KR"); }
@@ -1131,25 +1322,32 @@ $("calcBtn").addEventListener("click", ()=>{
   const bars = `
     <div class="space-y-2 mt-3">
       <div class="flex items-center gap-2 text-[11px]"><span class="w-24 text-secondary/80">현재 (${v.cur}%)</span>
-        <div class="flex-1 h-2.5 bg-surface-high rounded overflow-hidden"><div class="h-full bg-primary/70" style="width:${(r.curLandedU/mx*100).toFixed(1)}%"></div></div>
+        <div class="flex-1 h-2.5 bg-surface-high rounded overflow-hidden"><div class="bar-fill h-full bg-primary/70" style="width:${(r.curLandedU/mx*100).toFixed(1)}%"></div></div>
         <span class="w-24 text-right font-mono text-primary">${won(r.curLandedU*v.fx)}</span></div>
       <div class="flex items-center gap-2 text-[11px]"><span class="w-24 text-secondary/80">시나리오 (${v.scn}%)</span>
-        <div class="flex-1 h-2.5 bg-surface-high rounded overflow-hidden"><div class="h-full bg-primary amber-edge" style="width:${(r.scnLandedU/mx*100).toFixed(1)}%"></div></div>
+        <div class="flex-1 h-2.5 bg-surface-high rounded overflow-hidden"><div class="bar-fill h-full bg-primary amber-edge" style="width:${(r.scnLandedU/mx*100).toFixed(1)}%"></div></div>
         <span class="w-24 text-right font-mono text-primary">${won(r.scnLandedU*v.fx)}</span></div>
     </div>`;
   $("calcOut").innerHTML = `
-    <pre class="text-[12.5px] text-on-surface-variant leading-relaxed font-sans whitespace-pre-wrap">${escapeHtml(t)}</pre>
-    <div class="serif text-lg text-primary mt-2">총 추가 관세 부담: ${r.totalDeltaKRW>=0?"+":""}${won(r.totalDeltaKRW)}</div>
+    <pre class="text-[12.5px] text-on-surface-variant leading-relaxed font-sans whitespace-pre-wrap m-0">${escapeHtml(t)}</pre>
+    <div class="serif text-lg text-primary mt-2 amber-glow">총 추가 관세 부담: ${r.totalDeltaKRW>=0?"+":""}${won(r.totalDeltaKRW)}</div>
     <div class="text-[10.5px] text-secondary/60 uppercase tracking-widest">단위당 수입 원가(관세 포함) 비교</div>
     ${bars}
     <div class="text-[12px] text-on-surface-variant mt-3 leading-relaxed">→ ${escapeHtml(calcOpinion(v,r))}</div>
   `;
   $("calcOut").classList.remove("hidden");
+  // animate bars from 0 → target
+  setTimeout(()=> {
+    $("calcOut").querySelectorAll(".bar-fill").forEach(b=>{
+      const w = b.style.width; b.style.width = "0%";
+      requestAnimationFrame(()=> b.style.width = w);
+    });
+  }, 20);
   lastReport = { v, r };
   $("reportBtn").classList.remove("hidden");
 });
 
-/* ---------- 16. 보고서 PDF (브라우저 인쇄) ---------- */
+/* ---------- 16. Report PDF ---------- */
 function printReport(v, r){
   const d = new Date();
   const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
@@ -1171,28 +1369,16 @@ function printReport(v, r){
     res += rr("마진율", r.curMarginPct.toFixed(1)+"%", r.scnMarginPct.toFixed(1)+"%", sgn(r.scnMarginPct-r.curMarginPct)+(r.scnMarginPct-r.curMarginPct).toFixed(1)+"%p");
   }
   $("reportSheet").innerHTML = `
-    <div class="rs-head">
-      <div class="rs-title">관세율 변동 영향 분석 보고서</div>
-      <div class="rs-sub">Tariff Impact Analysis Report · TradeGuide v2</div>
-    </div>
+    <div class="rs-head"><div class="rs-title">관세율 변동 영향 분석 보고서</div><div class="rs-sub">Tariff Impact Analysis Report · TradeGuide v2</div></div>
     <div class="rs-body">
-      <table>
-        <tr><th style="width:18%">작성 기업</th><td style="width:42%">${e(company)}</td><th style="width:18%">작성일</th><td>${ds}</td></tr>
-        <tr><th>품목</th><td colspan="3">${e(v.product||"-")}${v.hs?" (HS "+e(v.hs)+")":""}</td></tr>
-      </table>
-      <h3>1. 입력 명세</h3>
-      <table><tbody>${spec}</tbody></table>
+      <table><tr><th style="width:18%">작성 기업</th><td style="width:42%">${e(company)}</td><th style="width:18%">작성일</th><td>${ds}</td></tr>
+      <tr><th>품목</th><td colspan="3">${e(v.product||"-")}${v.hs?" (HS "+e(v.hs)+")":""}</td></tr></table>
+      <h3>1. 입력 명세</h3><table><tbody>${spec}</tbody></table>
       <h3>2. 분석 결과</h3>
-      <table>
-        <thead><tr><th>구분</th><th>현재</th><th>시나리오</th><th>차이</th></tr></thead>
-        <tbody>${res}</tbody>
-      </table>
+      <table><thead><tr><th>구분</th><th>현재</th><th>시나리오</th><th>차이</th></tr></thead><tbody>${res}</tbody></table>
       <h3>3. 분석 의견</h3>
       <p class="rs-opinion">${e(calcOpinion(v,r))}</p>
-      <div class="rs-foot">
-        ※ 본 보고서는 단순 산술 모델 기반 추정치이며, 실제 거래에는 부가세·원산지 규정·계약 조건(관세 부담 주체 등)이 추가로 반영되어야 합니다.<br>
-        생성: TradeGuide v2 — WTO TRIPS·한미 통상법 RAG 시스템 · 작성일 ${ds}
-      </div>
+      <div class="rs-foot">※ 본 보고서는 단순 산술 모델 기반 추정치이며, 실제 거래에는 부가세·원산지 규정·계약 조건(관세 부담 주체 등)이 추가로 반영되어야 합니다.<br>생성: TradeGuide v2 — WTO TRIPS·한미 통상법 RAG 시스템 · 작성일 ${ds}</div>
     </div>`;
   document.body.classList.add("printing-report");
   const cleanup = ()=> document.body.classList.remove("printing-report");
@@ -1202,7 +1388,7 @@ function printReport(v, r){
 }
 $("reportBtn").addEventListener("click", ()=>{ if(lastReport) printReport(lastReport.v, lastReport.r); });
 
-/* ---------- 17. 설정 모달 ---------- */
+/* ---------- 17. Settings modal ---------- */
 function openModal(){
   const c = loadCfg();
   $("mKey").value = c.key; $("mModel").value = c.model; $("mAi").checked = c.aiMode;
@@ -1221,11 +1407,98 @@ $("mSave").addEventListener("click", ()=>{
 });
 $("mClear").addEventListener("click", ()=>{
   localStorage.removeItem("tgv3_apikey"); localStorage.removeItem("tgv3_aimode");
-  $("mKey").value = ""; $("mAi").checked = false;
-  updateAiBadge();
+  $("mKey").value = ""; $("mAi").checked = false; updateAiBadge();
 });
 
-/* ---------- 18. 초기화 ---------- */
+/* ============================================================
+ * 18. Cinematic interactions (3D / scroll / cursor)
+ * ============================================================ */
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Cursor spotlight (mouse-aware) */
+if (!reduceMotion && matchMedia("(hover: hover)").matches) {
+  const sp = document.createElement("div");
+  sp.className = "spotlight";
+  document.body.appendChild(sp);
+  let tx = innerWidth/2, ty = innerHeight/2, rx = tx, ry = ty;
+  addEventListener("pointermove", e=>{ tx = e.clientX; ty = e.clientY; });
+  (function loop(){
+    rx += (tx - rx) * 0.08;
+    ry += (ty - ry) * 0.08;
+    sp.style.left = rx + "px";
+    sp.style.top  = ry + "px";
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* 3D tilt on cards (mousemove) */
+if (!reduceMotion && matchMedia("(hover: hover)").matches) {
+  let raf = null;
+  addEventListener("pointermove", e=>{
+    if(raf) return;
+    raf = requestAnimationFrame(()=>{
+      raf = null;
+      document.querySelectorAll(".tilt").forEach(card=>{
+        const r = card.getBoundingClientRect();
+        if (e.clientX < r.left - 60 || e.clientX > r.right + 60 ||
+            e.clientY < r.top  - 60 || e.clientY > r.bottom + 60) {
+          card.style.transform = "";
+          return;
+        }
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        const ry = (x / r.width) * 5;
+        const rx = -(y / r.height) * 5;
+        card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+    });
+  });
+  addEventListener("pointerleave", ()=>{
+    document.querySelectorAll(".tilt").forEach(c=> c.style.transform = "");
+  });
+}
+
+/* Scroll-unfold via IntersectionObserver */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting) en.target.classList.add("is-visible");
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+function retriggerObserver(){
+  document.querySelectorAll(".unfold").forEach(el=>{
+    el.classList.remove("is-visible");
+    observer.observe(el);
+  });
+}
+retriggerObserver();
+
+/* Hero parallax on scroll */
+const hero = document.querySelector(".hero-title-wrap");
+if (!reduceMotion && hero) {
+  addEventListener("scroll", ()=>{
+    const y = scrollY;
+    if (y < innerHeight) {
+      hero.style.transform = `translateY(${y * 0.15}px)`;
+      hero.style.opacity = String(Math.max(0, 1 - y / (innerHeight * 0.7)));
+    }
+  }, { passive: true });
+}
+
+/* Particles in hero */
+(function spawnParticles(){
+  if (reduceMotion) return;
+  const wrap = document.getElementById("particles"); if(!wrap) return;
+  for (let i=0;i<14;i++){
+    const s = document.createElement("span");
+    s.style.left = Math.random()*100 + "%";
+    s.style.animationDuration = (8 + Math.random()*10) + "s";
+    s.style.animationDelay = (-Math.random()*15) + "s";
+    s.style.opacity = (0.3 + Math.random()*0.4);
+    wrap.appendChild(s);
+  }
+})();
+
+/* ---------- 19. Init ---------- */
 greeting();
 renderKb();
 updateAiBadge();
