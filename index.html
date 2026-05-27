@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Tell every browser (Samsung Internet, iOS Safari, etc.) the site is already
+     dark. Without this, Samsung Internet's "Dark mode for websites" feature
+     auto-inverts our form inputs, leaving them stark white. -->
+<meta name="color-scheme" content="dark" />
+<meta name="supported-color-schemes" content="dark" />
+<meta name="theme-color" content="#0a0a0a" />
 <title>TradeGuide v2 — Elite Legal Intelligence</title>
 
 <!-- ===== Stylesheets / fonts ===== -->
@@ -64,7 +70,7 @@
     --ease-snap: cubic-bezier(0.5, 0, 0.1, 1);
   }
 
-  html, body { background: #0a0a0a; }
+  html, body { background: #0a0a0a; color-scheme: dark; }
   body {
     color: var(--fg);
     font-family: "Pretendard Variable", Pretendard, Inter, "Malgun Gothic", system-ui, sans-serif;
@@ -75,6 +81,13 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     cursor: default;
+  }
+  /* Belt-and-suspenders against Samsung Internet's auto-dark-mode inverting
+     form controls and our text. We force the dark color scheme everywhere
+     and explicitly paint inputs ourselves. */
+  input, textarea, select, button {
+    color-scheme: dark;
+    background-color: transparent;
   }
   .serif { font-family: "Source Serif 4", serif; font-feature-settings: "kern" 1, "liga" 1, "dlig" 1; }
   .display {
@@ -505,7 +518,23 @@
   .calc-section { padding: 6px 0; }
   .calc-section-title { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 8px; border-bottom: 1px solid rgba(255,183,120,0.12); padding-bottom: 4px; }
   .calc-label { display: block; font-size: 11px; letter-spacing: 0.06em; color: #c8c6c5; margin-top: 8px; margin-bottom: 4px; }
-  .calc-input { width: 100%; background: rgba(19,19,19,0.6); border: 1px solid rgba(83,68,56,0.55); border-radius: 5px; padding: 9px 11px; font-size: 13px; color: var(--fg); outline: none; font-family: inherit; transition: border-color .25s, box-shadow .25s; -webkit-appearance: none; appearance: none; }
+  .calc-input {
+    width: 100%;
+    background-color: #131313;
+    background-image: none;
+    border: 1px solid rgba(83,68,56,0.55);
+    border-radius: 5px;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: #fafafa;
+    outline: none;
+    font-family: inherit;
+    transition: border-color .25s, box-shadow .25s;
+    -webkit-appearance: none;
+    appearance: none;
+    color-scheme: dark;
+    forced-color-adjust: none;
+  }
   .calc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(255,183,120,0.4), 0 0 14px rgba(255,183,120,0.15); }
   .calc-input::placeholder { color: rgba(216,195,179,0.35); }
   /* Suppress browser autofill / picker yellow-white background */
