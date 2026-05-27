@@ -203,11 +203,14 @@
 
   /* ============================================================
    * SplitType / GSAP reveal classes — initial state
+   * Only apply the hidden initial state when JS has confirmed
+   * the animation libs are ready (html.js-anim). Otherwise content
+   * stays visible and the page degrades gracefully.
    * ============================================================ */
   .split-line, .split-word, .split-char { display: inline-block; }
-  .reveal-prep { opacity: 0; transform: translateY(28px); }
-  .clip-prep   { clip-path: inset(0 0 100% 0); -webkit-clip-path: inset(0 0 100% 0); }
-  .scale-prep  { opacity: 0; transform: scale(0.96); }
+  html.js-anim .reveal-prep { opacity: 0; transform: translateY(28px); }
+  html.js-anim .clip-prep   { clip-path: inset(0 0 100% 0); -webkit-clip-path: inset(0 0 100% 0); }
+  html.js-anim .scale-prep  { opacity: 0; transform: scale(0.96); }
 
   /* ============================================================
    * Hover variable font weight (Fraunces)
@@ -266,7 +269,7 @@
    * ============================================================ */
   .doc-stage {
     position: relative;
-    height: 280vh; /* scroll-driven canvas */
+    height: 160vh; /* scroll-driven canvas — shorter so chat panel reaches the fold faster */
   }
   .doc-stage.no3d { height: auto; }
   .doc-sticky {
@@ -280,6 +283,7 @@
   .doc-stack {
     position: relative;
     width: min(640px, 78vw);
+    height: min(800px, 97.5vw);
     aspect-ratio: 4/5;
     transform-style: preserve-3d;
     will-change: transform;
@@ -355,10 +359,11 @@
   .doc-caption {
     position: absolute; left: 0; right: 0; bottom: 8vh;
     text-align: center; pointer-events: none;
-    opacity: 0; transform: translateY(20px);
+    opacity: 1;
     transition: opacity .8s var(--ease), transform .8s var(--ease);
   }
-  .doc-caption.is-visible { opacity: 1; transform: translateY(0); }
+  html.js-anim .doc-caption { opacity: 0; transform: translateY(20px); }
+  html.js-anim .doc-caption.is-visible { opacity: 1; transform: translateY(0); }
   .doc-scroll-hint {
     position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
     color: rgba(255,255,255,0.5); font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
@@ -366,14 +371,20 @@
   }
   @keyframes bob { 0%,100% { transform: translate(-50%,0); opacity: .5; } 50% { transform: translate(-50%, 6px); opacity: 1; } }
 
-  /* Mobile: skip 3D unfurl, show static hero */
-  @media (max-width: 760px) {
+  /* Mobile + touch + .no3d: skip 3D unfurl, show static hero */
+  @media (max-width: 760px), (hover: none), (pointer: coarse) {
     .doc-stage { height: auto !important; }
     .doc-sticky { position: static !important; height: auto !important; padding: 40px 0 30px !important; perspective: none !important; }
     .doc-stack { transform: none !important; }
     .page-2, .page-3, .page-4, .page-5 { display: none; }
     .page-1 { position: relative; }
   }
+  .doc-stage.no3d .doc-stack { transform: none !important; }
+  .doc-stage.no3d .page-2,
+  .doc-stage.no3d .page-3,
+  .doc-stage.no3d .page-4,
+  .doc-stage.no3d .page-5 { display: none; }
+  .doc-stage.no3d .page-1 { position: relative; }
 
   /* ============================================================
    * Modal
@@ -496,12 +507,13 @@
   .tree-svg path { stroke-dasharray: 600; stroke-dashoffset: 600; }
   .tab-strategy.active .tree-svg path { animation: draw 1.6s .3s var(--ease) forwards; }
   @keyframes draw { to { stroke-dashoffset: 0; } }
-  .tree-node { opacity: 0; transform: translateY(8px) scale(.96); transition: opacity .6s var(--ease), transform .6s var(--ease); }
-  .tab-strategy.active .tree-node { opacity: 1; transform: translateY(0) scale(1); }
-  .tab-strategy.active .tree-node.n1 { transition-delay: .15s; }
-  .tab-strategy.active .tree-node.n2 { transition-delay: 1.0s; }
-  .tab-strategy.active .tree-node.n3 { transition-delay: 1.2s; }
-  .tab-strategy.active .tree-node.n4 { transition-delay: 1.4s; }
+  .tree-node { opacity: 1; transition: opacity .6s var(--ease), filter .6s var(--ease); }
+  html.js-anim .tab-strategy:not(.active) .tree-node { opacity: 0; }
+  html.js-anim .tab-strategy.active .tree-node { opacity: 1; }
+  html.js-anim .tab-strategy.active .tree-node.n1 { transition-delay: .15s; }
+  html.js-anim .tab-strategy.active .tree-node.n2 { transition-delay: .35s; }
+  html.js-anim .tab-strategy.active .tree-node.n3 { transition-delay: .55s; }
+  html.js-anim .tab-strategy.active .tree-node.n4 { transition-delay: .75s; }
   .gauge-ring { stroke-dasharray: 264; stroke-dashoffset: 264; transition: stroke-dashoffset 1.4s var(--ease); }
   .tab-strategy.active .gauge-ring { stroke-dashoffset: 92; }
   .pb-fill { width: 0; transition: width 1.2s var(--ease); }
@@ -627,19 +639,19 @@
     <div class="px-10 mb-10 grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="glass card-lift light-source rounded-xl p-5">
         <div class="text-[10px] uppercase tracking-[0.22em] text-secondary/70">Articles indexed</div>
-        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="10">0</span></div>
+        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="10">10</span></div>
       </div>
       <div class="glass card-lift light-source rounded-xl p-5">
         <div class="text-[10px] uppercase tracking-[0.22em] text-secondary/70">Validation rules</div>
-        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="3">0</span></div>
+        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="3">3</span></div>
       </div>
       <div class="glass card-lift light-source rounded-xl p-5">
         <div class="text-[10px] uppercase tracking-[0.22em] text-secondary/70">Domains</div>
-        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="4">0</span></div>
+        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="4">4</span></div>
       </div>
       <div class="glass card-lift light-source rounded-xl p-5">
         <div class="text-[10px] uppercase tracking-[0.22em] text-secondary/70">Tabs</div>
-        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="4">0</span></div>
+        <div class="display tnum text-4xl mt-1 text-primary"><span data-count="4">4</span></div>
       </div>
     </div>
 
@@ -1215,7 +1227,10 @@ function nowTime(){ const d=new Date(); let h=d.getHours(); const m=String(d.get
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const hoverable = matchMedia("(hover: hover) and (pointer: fine)").matches;
-const isMobile = matchMedia("(max-width: 760px)").matches;
+/* Treat touch devices (incl. iPad) as "mobile" for 3D hero purposes — they
+   get the static .no3d fallback so the chat panel reaches the fold. */
+const isTouch = matchMedia("(hover: none), (pointer: coarse)").matches;
+const isMobile = matchMedia("(max-width: 760px)").matches || isTouch;
 
 /* ---------- 9. Settings ---------- */
 function loadCfg(){ return {
@@ -1719,15 +1734,26 @@ if(window.Lenis && !reduceMotion && !isMobile){
   }
 }
 
+/* Decide up-front whether the 3D scroll-driven hero is allowed.
+   Requires GSAP + ScrollTrigger, a non-touch hover-capable viewport, and
+   no reduced-motion preference. Otherwise fall back to a static page. */
+const can3D = !!(window.gsap && window.ScrollTrigger) && !isMobile && !reduceMotion;
+if(!can3D){
+  const ds = document.getElementById("docStage");
+  const dk = document.getElementById("docSticky");
+  if(ds) ds.classList.add("no3d");
+  if(dk) dk.classList.add("no3d");
+}
+
 /* GSAP ScrollTrigger setup */
 if(window.gsap && window.ScrollTrigger){
+  document.documentElement.classList.add("js-anim");
   gsap.registerPlugin(ScrollTrigger);
 
-  /* ---- 3D document unfurl ---- */
-  if(!isMobile && !reduceMotion){
+  /* ---- 3D document unfurl (desktop hover, motion allowed) ---- */
+  if(can3D){
     const stack = document.getElementById("docStack");
     const pageOne = document.getElementById("pageOne");
-    const sticky  = document.getElementById("docSticky");
 
     gsap.set(stack, { rotateX: 8, rotateY: -3, scale: 0.92 });
     gsap.set(pageOne, { rotateX: 0, transformOrigin: "top center" });
@@ -1740,42 +1766,66 @@ if(window.gsap && window.ScrollTrigger){
         scrub: 1,
       }
     })
-    // 0 → 0.2: dolly-in
     .to(stack, { rotateX: 2, rotateY: 0, scale: 1, ease: "none", duration: 0.2 })
-    // 0.2 → 0.5: page flip
     .to(pageOne, { rotateX: -180, ease: "none", duration: 0.3 }, 0.2)
-    // 0.5 → 0.8: text reveal (handled by .doc-caption visible)
-    // 0.8 → 1: camera retreat
     .to(stack, { rotateX: 6, scale: 0.95, opacity: 0.6, ease: "none", duration: 0.2 }, 0.8);
-  } else {
-    // mobile fallback: simple static header
-    document.getElementById("docStage").classList.add("no3d");
-    document.getElementById("docSticky").classList.add("no3d");
   }
 
-  /* ---- SplitType text reveals ---- */
+  /* ---- SplitType text reveals (animate when element is actually visible — not scroll-triggered, since headlines live inside tabs that toggle display:none and ScrollTrigger calculations get stale) ---- */
   if(window.SplitType && !reduceMotion){
-    document.querySelectorAll("[data-split-headline]").forEach(el=>{
-      const split = new SplitType(el, { types: "words,chars" });
-      gsap.from(split.chars, {
-        scrollTrigger: { trigger: el, start: "top 85%", once: true },
-        yPercent: 100, opacity: 0, stagger: 0.018, duration: 0.8, ease: "power3.out",
+    const splitMap = new Map();
+    const splitObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting) return;
+        const el = entry.target;
+        const rec = splitMap.get(el);
+        if(!rec || rec.played) return;
+        rec.played = true;
+        if(rec.kind === "headline"){
+          gsap.fromTo(rec.parts, { yPercent: 100, opacity: 0 },
+            { yPercent: 0, opacity: 1, stagger: 0.018, duration: 0.8, ease: "power3.out" });
+        } else {
+          gsap.fromTo(rec.parts, { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.012, duration: 0.6, ease: "power2.out" });
+        }
+        splitObserver.unobserve(el);
       });
+    }, { threshold: 0.05 });
+
+    document.querySelectorAll("[data-split-headline]").forEach(el=>{
+      try {
+        const split = new SplitType(el, { types: "words,chars" });
+        gsap.set(split.chars, { yPercent: 100, opacity: 0 });
+        splitMap.set(el, { kind: "headline", parts: split.chars, played: false });
+        splitObserver.observe(el);
+      } catch(e) { /* leave element as-is */ }
     });
     document.querySelectorAll("[data-split-body]").forEach(el=>{
-      const split = new SplitType(el, { types: "words" });
-      gsap.from(split.words, {
-        scrollTrigger: { trigger: el, start: "top 88%", once: true },
-        y: 16, opacity: 0, stagger: 0.012, duration: 0.6, ease: "power2.out",
-      });
+      try {
+        const split = new SplitType(el, { types: "words" });
+        gsap.set(split.words, { y: 16, opacity: 0 });
+        splitMap.set(el, { kind: "body", parts: split.words, played: false });
+        splitObserver.observe(el);
+      } catch(e) { /* leave element as-is */ }
     });
+
+    /* Safety net: after 5s, force-show anything that never intersected
+       (e.g. element was display:none on a hidden tab that the user never opened) */
+    setTimeout(()=>{
+      splitMap.forEach((rec, el)=>{
+        if(rec.played) return;
+        gsap.set(rec.parts, { yPercent: 0, y: 0, opacity: 1 });
+        rec.played = true;
+      });
+    }, 5000);
   }
 
-  /* ---- KPI count-up ---- */
+  /* ---- KPI count-up (target value pre-rendered below as fallback) ---- */
   document.querySelectorAll("[data-count]").forEach(el=>{
     const target = +el.dataset.count;
+    el.textContent = "0";
     ScrollTrigger.create({
-      trigger: el, start: "top 90%", once: true,
+      trigger: el, start: "top 95%", once: true,
       onEnter: ()=>{
         const start = performance.now(), dur = 1400;
         function step(t){
@@ -1788,6 +1838,11 @@ if(window.gsap && window.ScrollTrigger){
       }
     });
   });
+}
+
+/* ---- KPI fallback: if GSAP didn't load, show target value immediately ---- */
+if(!window.gsap || !window.ScrollTrigger){
+  document.querySelectorAll("[data-count]").forEach(el=>{ el.textContent = el.dataset.count; });
 }
 
 /* ---- IntersectionObserver for non-GSAP reveals ---- */
