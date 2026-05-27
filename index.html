@@ -416,20 +416,22 @@
   }
   @keyframes bob { 0%,100% { transform: translate(-50%,0); opacity: .5; } 50% { transform: translate(-50%, 6px); opacity: 1; } }
 
-  /* Mobile + touch + .no3d: skip 3D unfurl, show static hero */
+  /* Mobile + touch + .no3d: skip 3D unfurl, show static hero.
+     IMPORTANT: keep .page-1 as position:absolute (the default) — its children
+     are absolutely positioned with inset:0, so making the page relative
+     collapses it to 0 height and the cover disappears. The doc-stack has
+     explicit width + height + aspect-ratio so absolute inset:0 fills it. */
   @media (max-width: 760px), (hover: none), (pointer: coarse) {
     .doc-stage { height: auto !important; }
     .doc-sticky { position: static !important; height: auto !important; padding: 40px 0 30px !important; perspective: none !important; }
     .doc-stack { transform: none !important; }
     .page-2, .page-3, .page-4, .page-5 { display: none; }
-    .page-1 { position: relative; }
   }
   .doc-stage.no3d .doc-stack { transform: none !important; }
   .doc-stage.no3d .page-2,
   .doc-stage.no3d .page-3,
   .doc-stage.no3d .page-4,
   .doc-stage.no3d .page-5 { display: none; }
-  .doc-stage.no3d .page-1 { position: relative; }
 
   /* ============================================================
    * Modal
@@ -520,13 +522,17 @@
   .calc-label { display: block; font-size: 11px; letter-spacing: 0.06em; color: #c8c6c5; margin-top: 8px; margin-bottom: 4px; }
   .calc-input {
     width: 100%;
-    background-color: #131313;
-    background-image: none;
+    /* Samsung Internet's "Dark mode for websites" ignores color-scheme:dark
+       and inverts solid backgrounds. It does NOT invert background-image,
+       so we paint the dark fill via a gradient image — that one survives. */
+    background-color: #131313 !important;
+    background-image: linear-gradient(#131313, #131313) !important;
     border: 1px solid rgba(83,68,56,0.55);
     border-radius: 5px;
     padding: 9px 11px;
     font-size: 13px;
-    color: #fafafa;
+    color: #fafafa !important;
+    -webkit-text-fill-color: #fafafa !important;
     outline: none;
     font-family: inherit;
     transition: border-color .25s, box-shadow .25s;
@@ -536,7 +542,10 @@
     forced-color-adjust: none;
   }
   .calc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(255,183,120,0.4), 0 0 14px rgba(255,183,120,0.15); }
-  .calc-input::placeholder { color: rgba(216,195,179,0.35); }
+  .calc-input::placeholder { color: rgba(216,195,179,0.35) !important; -webkit-text-fill-color: rgba(216,195,179,0.35) !important; }
+  /* Select dropdown options also need explicit dark fill so the native
+     picker doesn't render light on Samsung Internet auto-dark. */
+  select.calc-input option { background-color: #131313 !important; color: #fafafa !important; }
   /* Suppress browser autofill / picker yellow-white background */
   .calc-input:-webkit-autofill,
   .calc-input:-webkit-autofill:hover,
