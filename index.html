@@ -9,7 +9,70 @@
 <meta name="color-scheme" content="dark" />
 <meta name="supported-color-schemes" content="dark" />
 <meta name="theme-color" content="#0a0a0a" />
-<title>TradeGuide v2 — Elite Legal Intelligence</title>
+<title>TradeGuide v2 — WTO TRIPS·한미 통상법 RAG 시스템 | 이경준</title>
+
+<!-- ===== SEO / Social ===== -->
+<meta name="description" content="WTO TRIPS 협정과 한미 통상법(무역법 122·301조, IEEPA 등)을 통합한 RAG 기반 법무 인텔리전스 시스템. TF-IDF 검색 · Agentic 질의 분해 · 3유형 자체 검증 · 관세 시나리오 계산기. 제작: 이경준." />
+<meta name="keywords" content="TRIPS, 강제실시권, 무역법 301조, 무역법 122조, IEEPA, RAG, 법무 인텔리전스, 통상법, TradeGuide, 이경준, WTO, 반도체 통상" />
+<meta name="author" content="이경준" />
+<meta name="creator" content="이경준" />
+<meta name="publisher" content="이경준" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="googlebot" content="index, follow" />
+<meta name="yeti" content="index, follow" />
+<link rel="canonical" href="https://fm98g6wh8n-netizen.github.io/Redesign/" />
+
+<!-- Open Graph (Facebook, KakaoTalk, Threads) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TradeGuide v2" />
+<meta property="og:title" content="TradeGuide v2 — Elite Legal Intelligence" />
+<meta property="og:description" content="WTO TRIPS·한미 통상법 RAG 시스템. TF-IDF · Agentic · 자체 검증. 제작: 이경준." />
+<meta property="og:url" content="https://fm98g6wh8n-netizen.github.io/Redesign/" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="article:author" content="이경준" />
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TradeGuide v2 — Elite Legal Intelligence" />
+<meta name="twitter:description" content="WTO TRIPS·한미 통상법 RAG 시스템. 제작: 이경준." />
+<meta name="twitter:creator" content="이경준" />
+
+<!-- Schema.org structured data — tells Google/Naver this is a WebApp authored by 이경준 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://fm98g6wh8n-netizen.github.io/Redesign/#website",
+      "url": "https://fm98g6wh8n-netizen.github.io/Redesign/",
+      "name": "TradeGuide v2",
+      "description": "WTO TRIPS 협정과 한미 통상법을 통합한 RAG 기반 법무 인텔리전스 시스템",
+      "inLanguage": "ko-KR",
+      "author": { "@id": "https://fm98g6wh8n-netizen.github.io/Redesign/#author" },
+      "creator": { "@id": "https://fm98g6wh8n-netizen.github.io/Redesign/#author" },
+      "publisher": { "@id": "https://fm98g6wh8n-netizen.github.io/Redesign/#author" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://fm98g6wh8n-netizen.github.io/Redesign/#author",
+      "name": "이경준",
+      "alternateName": "Lee Kyungjun",
+      "jobTitle": "Creator",
+      "knowsAbout": ["WTO TRIPS", "한미 통상법", "RAG", "법무 인텔리전스", "Trade Law"]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "TradeGuide v2",
+      "applicationCategory": "LegalTechApplication",
+      "operatingSystem": "Web Browser",
+      "description": "TF-IDF 검색 · Agentic 질의 분해 · 3유형 자체 검증 · 관세 시나리오 계산기를 한 캔버스에 통합한 법무 RAG 시스템",
+      "author": { "@id": "https://fm98g6wh8n-netizen.github.io/Redesign/#author" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+    }
+  ]
+}
+</script>
 
 <!-- ===== Stylesheets / fonts ===== -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -1045,9 +1108,17 @@
     </div>
   </section>
 
-  <footer class="mx-10 mt-12 pt-6 pb-12 border-t border-outline-variant/20 text-[11px] text-secondary/60 leading-relaxed max-w-4xl">
-    <strong class="text-secondary">시스템 한계 안내.</strong> 본 시스템은 학생부종합전형 동아리 활동 산출물로, TF-IDF 기반 정적 검색과 룰 기반 답변 템플릿으로 구성됩니다. 기본 모드는 LLM 없이 동작하며, 설정에서 사용자 API 키를 입력하면 선택적으로 LLM 생성 답변을 쓸 수 있습니다(이 경우에도 동일한 3유형 검증을 거칩니다). 답변은 내장된 WTO TRIPS 협정 조항과 한미 통상법 항목 범위에서만 이뤄집니다. "신뢰도 ★★★"은 3개 휴리스틱 통과를 의미할 뿐 법적 정확성을 보증하지 않습니다. 관세 시나리오 계산기는 단순 산술 모델이며 실제 거래에는 부가세·원산지 규정·계약 조건 등이 추가로 반영되어야 합니다. 실제 법률·통상 판단에는 원문 및 전문가 자문이 필요합니다.
+  <footer class="mx-10 mt-12 pt-6 pb-6 border-t border-outline-variant/20 text-[11px] text-secondary/60 leading-relaxed max-w-4xl">
+    <strong class="text-secondary">시스템 한계 안내.</strong> 본 시스템은 학생부종합전형 활동 산출물로, TF-IDF 기반 정적 검색과 룰 기반 답변 템플릿으로 구성됩니다. 기본 모드는 LLM 없이 동작하며, 설정에서 사용자 API 키를 입력하면 선택적으로 LLM 생성 답변을 쓸 수 있습니다(이 경우에도 동일한 3유형 검증을 거칩니다). 답변은 내장된 WTO TRIPS 협정 조항과 한미 통상법 항목 범위에서만 이뤄집니다. "신뢰도 ★★★"은 3개 휴리스틱 통과를 의미할 뿐 법적 정확성을 보증하지 않습니다. 관세 시나리오 계산기는 단순 산술 모델이며 실제 거래에는 부가세·원산지 규정·계약 조건 등이 추가로 반영되어야 합니다. 실제 법률·통상 판단에는 원문 및 전문가 자문이 필요합니다.
   </footer>
+  <div class="mx-10 pb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-[11px] text-secondary/70 max-w-4xl">
+    <div>
+      © 2026 <span class="text-primary font-semibold tracking-wide">이경준</span> · TradeGuide v2
+    </div>
+    <div class="text-secondary/50 tracking-wide">
+      WTO TRIPS · 한미 통상법 RAG System · Made by 이경준
+    </div>
+  </div>
 </main>
 
 <!-- ============== SETTINGS MODAL ============== -->

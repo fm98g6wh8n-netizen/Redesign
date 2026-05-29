@@ -1,0 +1,19 @@
+# TradeGuide v2 — 이경준
+# Allow all crawlers (Google, Naver Yeti, Bingbot, etc.)
+User-agent: *
+Allow: /
+
+# Major search bot allowlist (explicit, for completeness)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+Sitemap: https://fm98g6wh8n-netizen.github.io/Redesign/sitemap.xml
